@@ -41,17 +41,12 @@ class SimulationView: public QGraphicsView {
     /// @brief The car pieces to show on the screen
     QList<QGraphicsItem*> ballImages;
 
-    QGraphicsRectItem* leftSpaceFiller;
-    QGraphicsRectItem* rightSpaceFiller;
-    QGraphicsRectItem* topSpaceFiller;
-    QGraphicsRectItem* bottomSpaceFiller;
-
-    int    ballCount         = 50;
-    double restitution       = 1.0;
-    bool   monochrome        = false;
-    int    ballRadius        = 5;
-    bool   overrideBallColor = false;
-    QColor ballColor;
+    int                ballCount         = 50;
+    double             restitution       = 1.0;
+    int                ballRadius        = 5;
+    bool               overrideBallColor = false;
+    QColor             ballColor;
+    QGraphicsPathItem* sceneBackground;
 
     /// @brief The timer that updates the Box2D world and the graphics scene.
     QTimer* timer;
@@ -66,7 +61,6 @@ class SimulationView: public QGraphicsView {
   public slots:
     void setBallCount(int count);
     void setBounciness(double bounciness);
-    void setMonochrome(bool status);
     void setBallRadius(int pixels);
     void setBackgroundColor(bool override, QColor color);
     void setBallColor(bool override, QColor color);
@@ -77,8 +71,6 @@ class SimulationView: public QGraphicsView {
 
     /// @brief Overridden resizeEvent for QGraphicsView that scales its child scene upon resize.
     void resizeEvent(QResizeEvent* event) override;
-    /// @brief Overriden paintEvent to handle round the corners of the QGraphicsView.
-    void paintEvent(QPaintEvent* event) override;
 
   public slots:
 

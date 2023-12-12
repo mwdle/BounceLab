@@ -23,7 +23,14 @@ SimulationView::SimulationView(QWidget* parent) : world(b2Vec2(0.0f, 0.0f)) {
     // SCENE SETUP
     scene = new QGraphicsScene(0, 0, 800, 546);
     setScene(scene);
-    scene->setBackgroundBrush(QBrush(QColor(0, 0, 0)));
+
+    sceneBackground = new QGraphicsPathItem();
+    QPainterPath path;
+    path.addRoundedRect(QRectF(0, 0, scene->width(), scene->height()), 10, 10);
+    sceneBackground->setPath(path);
+    sceneBackground->setBrush(Qt::black);
+    scene->addItem(sceneBackground);
+    setPosition(sceneBackground, scene->width() / 2, scene->height() / 2);
 
     // BOX2D SETUP
 
@@ -59,30 +66,6 @@ SimulationView::SimulationView(QWidget* parent) : world(b2Vec2(0.0f, 0.0f)) {
     rightWallBox.SetAsBox(0.0f, scene->height() / 2);
     rightWallBody->CreateFixture(&rightWallBox, 0.0f);
 
-    leftSpaceFiller = new QGraphicsRectItem(0, 0, scene->width(), scene->height() * 2);
-    leftSpaceFiller->setBrush(QColor(50, 50, 50));
-    leftSpaceFiller->setPen(QPen(QColor(50, 50, 50)));
-    scene->addItem(leftSpaceFiller);
-    setPosition(leftSpaceFiller, -(scene->width() / 2), (scene->height() / 2));
-
-    rightSpaceFiller = new QGraphicsRectItem(0, 0, scene->width(), scene->height() * 2);
-    rightSpaceFiller->setBrush(QColor(50, 50, 50));
-    rightSpaceFiller->setPen(QPen(QColor(50, 50, 50)));
-    scene->addItem(rightSpaceFiller);
-    setPosition(rightSpaceFiller, scene->width() + (scene->width() / 2), (scene->height() / 2));
-
-    topSpaceFiller = new QGraphicsRectItem(0, 0, scene->width() * 2, scene->height());
-    topSpaceFiller->setBrush(QColor(50, 50, 50));
-    topSpaceFiller->setPen(QPen(QColor(50, 50, 50)));
-    scene->addItem(topSpaceFiller);
-    setPosition(topSpaceFiller, (scene->width() / 2), scene->height() + (scene->height() / 2));
-
-    bottomSpaceFiller = new QGraphicsRectItem(0, 0, scene->width() * 2, scene->height());
-    bottomSpaceFiller->setBrush(QColor(50, 50, 50));
-    bottomSpaceFiller->setPen(QPen(QColor(50, 50, 50)));
-    scene->addItem(bottomSpaceFiller);
-    setPosition(bottomSpaceFiller, (scene->width() / 2), -(scene->height() / 2));
-
     // Setup the physics timer
     QWidget::setFocus();
     timer = new QTimer();
@@ -107,10 +90,6 @@ void SimulationView::setBounciness(double bounciness) {
     restitution = bounciness;
 }
 
-void SimulationView::setMonochrome(bool status) {
-    monochrome = status;
-}
-
 void SimulationView::setBallRadius(int pixels) {
     ballRadius = pixels;
 }
@@ -132,14 +111,6 @@ void SimulationView::setPosition(QGraphicsItem* itemToPosition, float x, float y
 
 void SimulationView::resizeEvent(QResizeEvent* event) {
     fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
-}
-
-void SimulationView::paintEvent(QPaintEvent* event) {
-    QPainterPath path;
-    path.addRoundedRect(QRectF(rect()), 10.0, 10.0, Qt::AbsoluteSize);
-    QRegion mask = QRegion(path.toFillPolygon().toPolygon());
-    setMask(mask);
-    QGraphicsView::paintEvent(event);
 }
 
 void SimulationView::runSimulation() {
@@ -180,8 +151,6 @@ void SimulationView::runSimulation() {
         QGraphicsEllipseItem* ballImage = new QGraphicsEllipseItem(0, 0, ballShape.m_radius * 2, ballShape.m_radius * 2);
         if(overrideBallColor)
             ballImage->setBrush(ballColor);
-        else if(monochrome)
-            ballImage->setBrush(Qt::white);
         else
             ballImage->setBrush(QColor(getRandomNumber(0, 255), getRandomNumber(0, 255), getRandomNumber(0, 255)));
         scene->addItem(ballImage);
@@ -203,10 +172,7 @@ SimulationView::~SimulationView() {
     timer->stop();
     delete timer;
     delete scene;
-    delete leftSpaceFiller;
-    delete rightSpaceFiller;
-    delete topSpaceFiller;
-    delete bottomSpaceFiller;
+    delete sceneBackground;
     for (b2Body* ballBody : ballBodies) {
         if(ballBody != nullptr) {
             world.DestroyBody(ballBody);
