@@ -44,16 +44,24 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent), ui(new Ui::MainWin
 }
 
 void MainWindow::ballColorOverride(bool override) {
-    if(override)
-        emit updateBallColor(true, QColorDialog::getColor(Qt::white, nullptr, "Select Color"));
-    else
+    if(override) {
+        QColor color = QColorDialog::getColor(Qt::white, nullptr, "Select Color");
+        if(color.isValid())
+            emit updateBallColor(true, color);
+        else
+            ui->ballColorCheckbox->setCheckState(Qt::Unchecked);
+    } else
         emit updateBallColor(false, Qt::white);
 }
 
 void MainWindow::backgroundColorOverride(bool override) {
-    if(override)
-        emit updateBackgroundColor(true, QColorDialog::getColor(Qt::black, nullptr, "Select Color"));
-    else
+    if(override) {
+        QColor color = QColorDialog::getColor(Qt::black, nullptr, "Select Color");
+        if(color.isValid())
+            emit updateBackgroundColor(true, color);
+        else
+            ui->backgroundColorCheckbox->setCheckState(Qt::Unchecked);
+    } else
         emit updateBackgroundColor(false, Qt::black);
 }
 

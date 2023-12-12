@@ -95,9 +95,9 @@ void SimulationView::setBallRadius(int pixels) {
 }
 void SimulationView::setBackgroundColor(bool override, QColor color) {
     if(override)
-        scene->setBackgroundBrush(color);
+        sceneBackground->setBrush(color);
     else
-        scene->setBackgroundBrush(Qt::black);
+        sceneBackground->setBrush(Qt::black);
 }
 void SimulationView::setBallColor(bool override, QColor color) {
     overrideBallColor = override;
