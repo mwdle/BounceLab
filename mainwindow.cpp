@@ -9,8 +9,10 @@
  */
 
 #include "mainwindow.h"
+
 #include "ui_mainwindow.h"
 
+#include <QColorDialog>
 #include <QRandomGenerator>
 
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -23,12 +25,39 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent), ui(new Ui::MainWin
     // Connect view buttons to controller and model
 
     connect(ui->startButton, &QPushButton::clicked, ui->simulationBox, &SimulationView::runSimulation);
+    connect(ui->startButton, &QPushButton::clicked, this, &MainWindow::startButtonClicked);
     connect(ui->exitButton, &QPushButton::clicked, this, &MainWindow::exitButtonClicked);
+    connect(ui->exitButton, &QPushButton::clicked, ui->simulationBox, &SimulationView::stopSimulation);
     connect(ui->returnHomeButton, &QPushButton::clicked, this, &MainWindow::returnHomeClicked);
+    connect(ui->returnHomeButton, &QPushButton::clicked, ui->simulationBox, &SimulationView::stopSimulation);
+
+    connect(ui->ballColorCheckbox, &QCheckBox::stateChanged, this, &MainWindow::ballColorOverride);
+    connect(this, &MainWindow::updateBallColor, ui->simulationBox, &SimulationView::setBallColor);
+
+    connect(ui->backgroundColorCheckbox, &QCheckBox::stateChanged, this, &MainWindow::backgroundColorOverride);
+    connect(this, &MainWindow::updateBackgroundColor, ui->simulationBox, &SimulationView::setBackgroundColor);
+
+    connect(ui->ballRadius, &QSpinBox::valueChanged, ui->simulationBox, &SimulationView::setBallRadius);
 
     connect(ui->ballCount, &QSpinBox::valueChanged, ui->simulationBox, &SimulationView::setBallCount);
     connect(ui->bouncinessLevel, &QDoubleSpinBox::valueChanged, ui->simulationBox, &SimulationView::setBounciness);
     connect(ui->monochromeStatus, &QCheckBox::stateChanged, ui->simulationBox, &SimulationView::setMonochrome);
+}
+
+void MainWindow::ballColorOverride(bool override) {
+    QColor initialColor = Qt::white;
+    if(override)
+        emit updateBallColor(true, QColorDialog::getColor(initialColor, nullptr, "Select Color"));
+    else
+        emit updateBallColor(false, initialColor);
+}
+
+void MainWindow::backgroundColorOverride(bool override) {
+    QColor initialColor = Qt::black;
+    if(override)
+        emit updateBackgroundColor(true, QColorDialog::getColor(initialColor, nullptr, "Select Color"));
+    else
+        emit updateBackgroundColor(false, initialColor);
 }
 
 MainWindow::~MainWindow() {

@@ -41,9 +41,17 @@ class SimulationView: public QGraphicsView {
     /// @brief The car pieces to show on the screen
     QList<QGraphicsItem*> ballImages;
 
-    int ballCount;
-    double restitution;
-    bool monochrome;
+    QGraphicsRectItem* leftSpaceFiller;
+    QGraphicsRectItem* rightSpaceFiller;
+    QGraphicsRectItem* topSpaceFiller;
+    QGraphicsRectItem* bottomSpaceFiller;
+
+    int    ballCount         = 50;
+    double restitution       = 1.0;
+    bool   monochrome        = false;
+    int    ballRadius        = 5;
+    bool   overrideBallColor = false;
+    QColor ballColor;
 
     /// @brief The timer that updates the Box2D world and the graphics scene.
     QTimer* timer;
@@ -59,7 +67,11 @@ class SimulationView: public QGraphicsView {
     void setBallCount(int count);
     void setBounciness(double bounciness);
     void setMonochrome(bool status);
+    void setBallRadius(int pixels);
+    void setBackgroundColor(bool override, QColor color);
+    void setBallColor(bool override, QColor color);
     void runSimulation();
+    void stopSimulation();
 
   protected:
 

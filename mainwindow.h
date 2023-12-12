@@ -32,7 +32,8 @@ class MainWindow: public QMainWindow {
     Ui::MainWindow* ui;
 
   signals:
-
+    void updateBallColor(bool override, QColor color);
+    void updateBackgroundColor(bool override, QColor color);
 
   private slots:
 
@@ -45,5 +46,10 @@ class MainWindow: public QMainWindow {
     /// @brief Slot called when a button is clicked
     void returnHomeClicked();
 
+    /// @brief Slot called when a checkbox is selected
+    void ballColorOverride(bool override);
+
+    /// @brief Slot called when a checkbox is selected
+    void backgroundColorOverride(bool override);
 };
 #endif  // MAINWINDOW_H

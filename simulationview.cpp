@@ -21,11 +21,7 @@
 SimulationView::SimulationView(QWidget* parent) : world(b2Vec2(0.0f, 0.0f)) {
 
     // SCENE SETUP
-    ballCount = 30;
-    restitution = 1.0;
-    monochrome = false;
-
-    scene = new QGraphicsScene(0, 0, 800, 442);
+    scene = new QGraphicsScene(0, 0, 800, 546);
     setScene(scene);
     scene->setBackgroundBrush(QBrush(QColor(0, 0, 0)));
 
@@ -36,7 +32,7 @@ SimulationView::SimulationView(QWidget* parent) : world(b2Vec2(0.0f, 0.0f)) {
     groundBodyDef.position.Set(scene->width() / 2, 0.0f);
     b2Body*        groundBody = world.CreateBody(&groundBodyDef);
     b2PolygonShape groundBox;
-    groundBox.SetAsBox(scene->width(), 0.0f);
+    groundBox.SetAsBox(scene->width() / 2, 0.0f);
     groundBody->CreateFixture(&groundBox, 0.0f);
 
     // Define the ceiling.
@@ -49,11 +45,43 @@ SimulationView::SimulationView(QWidget* parent) : world(b2Vec2(0.0f, 0.0f)) {
 
     // Define the left wall.
     b2BodyDef leftWallBodyDef;
-    leftWallBodyDef.position.Set(0.0f, 0.0f);
+    leftWallBodyDef.position.Set(0.0f, scene->height() / 2);
     b2Body*        leftWallBody = world.CreateBody(&leftWallBodyDef);
     b2PolygonShape leftWallBox;
     leftWallBox.SetAsBox(0.0f, scene->height() / 2);
     leftWallBody->CreateFixture(&leftWallBox, 0.0f);
+
+    // Define the right wall.
+    b2BodyDef rightWallBodyDef;
+    rightWallBodyDef.position.Set(scene->width(), scene->height() / 2);
+    b2Body*        rightWallBody = world.CreateBody(&rightWallBodyDef);
+    b2PolygonShape rightWallBox;
+    rightWallBox.SetAsBox(0.0f, scene->height() / 2);
+    rightWallBody->CreateFixture(&rightWallBox, 0.0f);
+
+    leftSpaceFiller = new QGraphicsRectItem(0, 0, scene->width(), scene->height() * 2);
+    leftSpaceFiller->setBrush(QColor(50, 50, 50));
+    leftSpaceFiller->setPen(QPen(QColor(50, 50, 50)));
+    scene->addItem(leftSpaceFiller);
+    setPosition(leftSpaceFiller, -(scene->width() / 2), (scene->height() / 2));
+
+    rightSpaceFiller = new QGraphicsRectItem(0, 0, scene->width(), scene->height() * 2);
+    rightSpaceFiller->setBrush(QColor(50, 50, 50));
+    rightSpaceFiller->setPen(QPen(QColor(50, 50, 50)));
+    scene->addItem(rightSpaceFiller);
+    setPosition(rightSpaceFiller, scene->width() + (scene->width() / 2), (scene->height() / 2));
+
+    topSpaceFiller = new QGraphicsRectItem(0, 0, scene->width() * 2, scene->height());
+    topSpaceFiller->setBrush(QColor(50, 50, 50));
+    topSpaceFiller->setPen(QPen(QColor(50, 50, 50)));
+    scene->addItem(topSpaceFiller);
+    setPosition(topSpaceFiller, (scene->width() / 2), scene->height() + (scene->height() / 2));
+
+    bottomSpaceFiller = new QGraphicsRectItem(0, 0, scene->width() * 2, scene->height());
+    bottomSpaceFiller->setBrush(QColor(50, 50, 50));
+    bottomSpaceFiller->setPen(QPen(QColor(50, 50, 50)));
+    scene->addItem(bottomSpaceFiller);
+    setPosition(bottomSpaceFiller, (scene->width() / 2), -(scene->height() / 2));
 
     // Setup the physics timer
     QWidget::setFocus();
@@ -81,6 +109,20 @@ void SimulationView::setBounciness(double bounciness) {
 
 void SimulationView::setMonochrome(bool status) {
     monochrome = status;
+}
+
+void SimulationView::setBallRadius(int pixels) {
+    ballRadius = pixels;
+}
+void SimulationView::setBackgroundColor(bool override, QColor color) {
+    if(override)
+        scene->setBackgroundBrush(color);
+    else
+        scene->setBackgroundBrush(Qt::black);
+}
+void SimulationView::setBallColor(bool override, QColor color) {
+    overrideBallColor = override;
+    ballColor         = color;
 }
 
 void SimulationView::setPosition(QGraphicsItem* itemToPosition, float x, float y) {
@@ -114,26 +156,34 @@ void SimulationView::runSimulation() {
     ballBodies.clear();
     for (int i = 0; i < ballCount; i++) {
         b2CircleShape ballShape;
-        ballShape.m_radius = 1.0f;
+        ballShape.m_radius = ballRadius;
         // Define the car's dynamic body. We set its position and call the body factory.
         b2BodyDef ballDef;
         ballDef.type = b2_dynamicBody;
-        ballDef.position.Set((scene->width() / 2) + getRandomNumber(0, 400), (scene->height() / 2) + getRandomNumber(0, 221));
+        ballDef.position.Set(getRandomNumber(0, scene->width()), getRandomNumber(0, scene->height()));
         b2Body* ballBody = world.CreateBody(&ballDef);
 
         // Define the dynamic body fixture.
         b2FixtureDef ballFixture;
         ballFixture.shape       = &ballShape;
         ballFixture.density     = 1.0f;
-        ballFixture.friction    = 0.1f;
+        ballFixture.friction    = 0.0f;
         ballFixture.restitution = restitution;
 
         // Add the shape to the body.
         ballBody->CreateFixture(&ballFixture);
         ballBodies.push_back(ballBody);
+        b2Vec2 impulseForce =
+            b2Vec2(((scene->width() / 2) - ballBody->GetPosition().x) * 50, ((scene->height() / 2) - ballBody->GetPosition().y) * 50);
+        ballBody->ApplyLinearImpulse(impulseForce, ballBody->GetLocalCenter(), true);
 
-        QGraphicsEllipseItem* ballImage = new QGraphicsEllipseItem(0,0,10,10);
-        ballImage->setBrush(QColor(getRandomNumber(0, 255), getRandomNumber(0,255), getRandomNumber(0, 255)));
+        QGraphicsEllipseItem* ballImage = new QGraphicsEllipseItem(0, 0, ballShape.m_radius * 2, ballShape.m_radius * 2);
+        if(overrideBallColor)
+            ballImage->setBrush(ballColor);
+        else if(monochrome)
+            ballImage->setBrush(Qt::white);
+        else
+            ballImage->setBrush(QColor(getRandomNumber(0, 255), getRandomNumber(0, 255), getRandomNumber(0, 255)));
         scene->addItem(ballImage);
         ballImages.push_back(ballImage);
         setPosition(ballImage, ballBody->GetPosition().x, ballBody->GetPosition().y);
@@ -145,10 +195,18 @@ int SimulationView::getRandomNumber(int min, int max) {
     return min + std::rand() % (max - min + 1);
 }
 
+void SimulationView::stopSimulation() {
+    timer->stop();
+}
+
 SimulationView::~SimulationView() {
     timer->stop();
     delete timer;
     delete scene;
+    delete leftSpaceFiller;
+    delete rightSpaceFiller;
+    delete topSpaceFiller;
+    delete bottomSpaceFiller;
     for (b2Body* ballBody : ballBodies) {
         if(ballBody != nullptr) {
             world.DestroyBody(ballBody);
