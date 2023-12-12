@@ -25,6 +25,13 @@ class SimulationView: public QGraphicsView {
     SimulationView(QWidget* parent = nullptr);
     ~SimulationView();
 
+    enum Shapes {
+        random    = 0,
+        circle    = 1,
+        rectangle = 2,
+        triangle  = 3,
+    };
+
   private:
     /// @brief Converts Box2D coordinates to scene coordinates and sets the position of the parameter QGraphicsItem in the scene.
     /// @param itemToPosition The GraphicsItem to position on the scene.
@@ -37,15 +44,19 @@ class SimulationView: public QGraphicsView {
     /// @brief The Box2D world.
     b2World world;
     /// @brief The dynamic bodies of the car objects
-    QList<b2Body*> ballBodies;
+    QList<b2Body*> shapeBodies;
     /// @brief The car pieces to show on the screen
-    QList<QGraphicsItem*> ballImages;
+    QList<QGraphicsItem*> shapeImages;
 
-    int                ballCount         = 50;
-    double             restitution       = 1.0;
-    int                ballRadius        = 5;
-    bool               overrideBallColor = false;
-    QColor             ballColor;
+    int                shapeCount         = 50;
+    double             elasticity         = 1.0;
+    double             friction           = 0.0;
+    double             shapeDensity       = 1.0;
+    int                shapeWidth         = 10;
+    int                shapeHeight        = 10;
+    int                shape              = random;
+    bool               overrideShapeColor = false;
+    QColor             shapeColor;
     QGraphicsPathItem* sceneBackground;
 
     /// @brief The timer that updates the Box2D world and the graphics scene.
@@ -59,11 +70,16 @@ class SimulationView: public QGraphicsView {
   private slots:
 
   public slots:
-    void setBallCount(int count);
-    void setBounciness(double bounciness);
-    void setBallRadius(int pixels);
+    void setShapeCount(int count);
+    void setElasticity(double elasticity);
+    void setGravity(double gravity);
+    void setFriction(double friction);
+    void setShapeDensity(double density);
+    void setShapeWidth(int width);
+    void setShapeHeight(int height);
     void setBackgroundColor(bool override, QColor color);
-    void setBallColor(bool override, QColor color);
+    void setShapeColor(bool override, QColor color);
+    void setShape(int shape);
     void runSimulation();
     void stopSimulation();
 

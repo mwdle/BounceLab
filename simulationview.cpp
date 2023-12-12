@@ -76,32 +76,54 @@ void SimulationView::updateWorld() {
     // Instruct the world to perform a single step of simulation.
     world.Step(1.0f / 60.0f, 6, 2);
 
-    for (int i = 0; i < ballCount; i++) {
-        b2Vec2 position = ballBodies.at(i)->GetPosition();
-        setPosition(ballImages.at(i), position.x, position.y);
+    for(int i = 0; i < shapeCount; i++) {
+        b2Vec2 position = shapeBodies.at(i)->GetPosition();
+        setPosition(shapeImages.at(i), position.x, position.y);
     }
 }
 
-void SimulationView::setBallCount(int count) {
-    ballCount = count;
+void SimulationView::setShapeCount(int count) {
+    shapeCount = count;
 }
 
-void SimulationView::setBounciness(double bounciness) {
-    restitution = bounciness;
+void SimulationView::setShape(int shape) {
+    this->shape = shape;
 }
 
-void SimulationView::setBallRadius(int pixels) {
-    ballRadius = pixels;
+void SimulationView::setElasticity(double elasticity) {
+    this->elasticity = elasticity;
 }
+
+void SimulationView::setGravity(double gravity) {
+    world.SetGravity(b2Vec2(0.0f, gravity));
+}
+
+void SimulationView::setFriction(double friction) {
+    this->friction = friction;
+}
+
+void SimulationView::setShapeDensity(double density) {
+    this->shapeDensity = density;
+}
+
+void SimulationView::setShapeWidth(int width) {
+    this->shapeWidth = width;
+}
+
+void SimulationView::setShapeHeight(int height) {
+    this->shapeHeight = height;
+}
+
 void SimulationView::setBackgroundColor(bool override, QColor color) {
     if(override)
         sceneBackground->setBrush(color);
     else
         sceneBackground->setBrush(Qt::black);
 }
-void SimulationView::setBallColor(bool override, QColor color) {
-    overrideBallColor = override;
-    ballColor         = color;
+
+void SimulationView::setShapeColor(bool override, QColor color) {
+    overrideShapeColor = override;
+    shapeColor         = color;
 }
 
 void SimulationView::setPosition(QGraphicsItem* itemToPosition, float x, float y) {
@@ -116,18 +138,18 @@ void SimulationView::resizeEvent(QResizeEvent* event) {
 void SimulationView::runSimulation() {
     timer->stop();
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
-    for (QGraphicsItem* item : ballImages) {
-        delete item;
+    for(QGraphicsItem* shapeImage : shapeImages) {
+        delete shapeImage;
     }
-    ballImages.clear();
-    for (b2Body* ballBody : ballBodies)
-    {
-        world.DestroyBody(ballBody);
+    shapeImages.clear();
+    for(b2Body* shapeBody : shapeBodies) {
+        world.DestroyBody(shapeBody);
     }
-    ballBodies.clear();
-    for (int i = 0; i < ballCount; i++) {
+    shapeBodies.clear();
+    for(int i = 0; i < shapeCount; i++) {
+
         b2CircleShape ballShape;
-        ballShape.m_radius = ballRadius;
+        ballShape.m_radius = shapeWidth / 2;
         // Define the car's dynamic body. We set its position and call the body factory.
         b2BodyDef ballDef;
         ballDef.type = b2_dynamicBody;
@@ -137,24 +159,24 @@ void SimulationView::runSimulation() {
         // Define the dynamic body fixture.
         b2FixtureDef ballFixture;
         ballFixture.shape       = &ballShape;
-        ballFixture.density     = 1.0f;
-        ballFixture.friction    = 0.0f;
-        ballFixture.restitution = restitution;
+        ballFixture.density     = shapeDensity;
+        ballFixture.friction    = friction;
+        ballFixture.restitution = elasticity;
 
         // Add the shape to the body.
         ballBody->CreateFixture(&ballFixture);
-        ballBodies.push_back(ballBody);
+        shapeBodies.push_back(ballBody);
         b2Vec2 impulseForce =
             b2Vec2(((scene->width() / 2) - ballBody->GetPosition().x) * 50, ((scene->height() / 2) - ballBody->GetPosition().y) * 50);
         ballBody->ApplyLinearImpulse(impulseForce, ballBody->GetLocalCenter(), true);
 
         QGraphicsEllipseItem* ballImage = new QGraphicsEllipseItem(0, 0, ballShape.m_radius * 2, ballShape.m_radius * 2);
-        if(overrideBallColor)
-            ballImage->setBrush(ballColor);
+        if(overrideShapeColor)
+            ballImage->setBrush(shapeColor);
         else
             ballImage->setBrush(QColor(getRandomNumber(0, 255), getRandomNumber(0, 255), getRandomNumber(0, 255)));
         scene->addItem(ballImage);
-        ballImages.push_back(ballImage);
+        shapeImages.push_back(ballImage);
         setPosition(ballImage, ballBody->GetPosition().x, ballBody->GetPosition().y);
     }
     timer->start(3);
@@ -173,12 +195,12 @@ SimulationView::~SimulationView() {
     delete timer;
     delete scene;
     delete sceneBackground;
-    for (b2Body* ballBody : ballBodies) {
+    for(b2Body* ballBody : shapeBodies) {
         if(ballBody != nullptr) {
             world.DestroyBody(ballBody);
         }
     }
-    for (QGraphicsItem* ballImage : ballImages) {
+    for(QGraphicsItem* ballImage : shapeImages) {
         delete ballImage;
     }
 }

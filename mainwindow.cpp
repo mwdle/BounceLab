@@ -31,27 +31,54 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(ui->returnHomeButton, &QPushButton::clicked, this, &MainWindow::returnHomeClicked);
     connect(ui->returnHomeButton, &QPushButton::clicked, ui->simulationBox, &SimulationView::stopSimulation);
 
-    connect(ui->ballColorCheckbox, &QCheckBox::clicked, this, &MainWindow::ballColorOverride);
-    connect(this, &MainWindow::updateBallColor, ui->simulationBox, &SimulationView::setBallColor);
+    connect(ui->shapeColor, &QCheckBox::clicked, this, &MainWindow::shapeColorOverride);
+    connect(this, &MainWindow::updateShapeColor, ui->simulationBox, &SimulationView::setShapeColor);
 
-    connect(ui->backgroundColorCheckbox, &QCheckBox::clicked, this, &MainWindow::backgroundColorOverride);
+    connect(ui->backgroundColor, &QCheckBox::clicked, this, &MainWindow::backgroundColorOverride);
     connect(this, &MainWindow::updateBackgroundColor, ui->simulationBox, &SimulationView::setBackgroundColor);
 
-    connect(ui->ballRadius, &QSpinBox::valueChanged, ui->simulationBox, &SimulationView::setBallRadius);
+    connect(ui->shapeWidth, &QSpinBox::valueChanged, ui->simulationBox, &SimulationView::setShapeWidth);
+    connect(ui->shapeHeight, &QSpinBox::valueChanged, ui->simulationBox, &SimulationView::setShapeWidth);
+    connect(ui->circleRadius, &QSpinBox::valueChanged, this, &MainWindow::setCircleRadius);
+    connect(this, &MainWindow::updateCircleRadius, ui->simulationBox, &SimulationView::setShapeWidth);
 
-    connect(ui->ballCount, &QSpinBox::valueChanged, ui->simulationBox, &SimulationView::setBallCount);
-    connect(ui->bouncinessLevel, &QDoubleSpinBox::valueChanged, ui->simulationBox, &SimulationView::setBounciness);
+    connect(ui->shapeDropdown, &QComboBox::currentIndexChanged, ui->simulationBox, &SimulationView::setShape);
+
+    connect(ui->shapeCount, &QSpinBox::valueChanged, ui->simulationBox, &SimulationView::setShapeCount);
+    connect(ui->shapeDensity, &QDoubleSpinBox::valueChanged, ui->simulationBox, &SimulationView::setShapeDensity);
+    connect(ui->elasticity, &QDoubleSpinBox::valueChanged, ui->simulationBox, &SimulationView::setElasticity);
+    connect(ui->friction, &QDoubleSpinBox::valueChanged, ui->simulationBox, &SimulationView::setFriction);
+    connect(ui->gravity, &QDoubleSpinBox::valueChanged, ui->simulationBox, &SimulationView::setGravity);
+
+    connect(ui->generalSettingsButton, &QPushButton::clicked, this, &MainWindow::generalSettingsClicked);
+    connect(ui->shapeSettingsButton, &QPushButton::clicked, this, &MainWindow::shapeSettingsClicked);
+    connect(ui->colorSettingsButton, &QPushButton::clicked, this, &MainWindow::colorSettingsClicked);
+
+    connect(ui->shapeDropdown, &QComboBox::activated, this, &MainWindow::shapeSelected);
 }
 
-void MainWindow::ballColorOverride(bool override) {
+void MainWindow::shapeSelected(int shape) {
+    switch(shape) {
+        case 0: ui->shapeSpecificSettings->setCurrentIndex(0); break;
+        case 1: ui->shapeSpecificSettings->setCurrentIndex(1); break;
+        case 2: ui->shapeSpecificSettings->setCurrentIndex(2); break;
+        case 3: ui->shapeSpecificSettings->setCurrentIndex(2); break;
+    }
+}
+
+void MainWindow::setCircleRadius(int radius) {
+    emit updateCircleRadius(radius * 2);
+}
+
+void MainWindow::shapeColorOverride(bool override) {
     if(override) {
         QColor color = QColorDialog::getColor(Qt::white, nullptr, "Select Color");
         if(color.isValid())
-            emit updateBallColor(true, color);
+            emit updateShapeColor(true, color);
         else
-            ui->ballColorCheckbox->setCheckState(Qt::Unchecked);
+            ui->shapeColor->setCheckState(Qt::Unchecked);
     } else
-        emit updateBallColor(false, Qt::white);
+        emit updateShapeColor(false, Qt::white);
 }
 
 void MainWindow::backgroundColorOverride(bool override) {
@@ -60,9 +87,21 @@ void MainWindow::backgroundColorOverride(bool override) {
         if(color.isValid())
             emit updateBackgroundColor(true, color);
         else
-            ui->backgroundColorCheckbox->setCheckState(Qt::Unchecked);
+            ui->backgroundColor->setCheckState(Qt::Unchecked);
     } else
         emit updateBackgroundColor(false, Qt::black);
+}
+
+void MainWindow::generalSettingsClicked() {
+    ui->settings->setCurrentIndex(0);
+}
+
+void MainWindow::shapeSettingsClicked() {
+    ui->settings->setCurrentIndex(1);
+}
+
+void MainWindow::colorSettingsClicked() {
+    ui->settings->setCurrentIndex(2);
 }
 
 MainWindow::~MainWindow() {
