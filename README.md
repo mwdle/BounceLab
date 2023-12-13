@@ -1,2 +1,2 @@
 # BounceLab
-BounceLab - A simulator for spheroids in 2d physical space, featuring customizable parameters.
+BounceLab - A customizable and interactable graphical simulator for various shapes in 2d physical space.
