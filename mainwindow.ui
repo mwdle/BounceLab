@@ -288,9 +288,9 @@ QPushButton:pressed {
              <string notr="true">QPushButton{
 	background-color: #1f2024;
 	border-style: solid;
-	border-color: black;
+	border-color: #3f424a;
 	border-width: 1px;
-	border-radius:0px;
+	border-radius:5px;
 }
 QPushButton:hover
 {
@@ -345,9 +345,9 @@ QPushButton:hover:pressed
              <string notr="true">QPushButton{
 	background-color: #1f2024;
 	border-style: solid;
-	border-color: black;
+	border-color: #3f424a;
 	border-width: 1px;
-	border-radius:0px;
+	border-radius:5px;
 }
 QPushButton:hover
 {
@@ -451,7 +451,7 @@ color: white;
                   <double>2.000000000000000</double>
                  </property>
                  <property name="singleStep">
-                  <double>0.100000000000000</double>
+                  <double>0.025000000000000</double>
                  </property>
                  <property name="value">
                   <double>1.000000000000000</double>
@@ -603,7 +603,7 @@ color: white;
                   <double>1.000000000000000</double>
                  </property>
                  <property name="singleStep">
-                  <double>0.100000000000000</double>
+                  <double>0.050000000000000</double>
                  </property>
                  <property name="value">
                   <double>0.000000000000000</double>
@@ -922,7 +922,7 @@ Elasticity
                 <widget class="QLabel" name="shapeLabel">
                  <property name="font">
                   <font>
-                   <pointsize>12</pointsize>
+                   <pointsize>14</pointsize>
                   </font>
                  </property>
                  <property name="styleSheet">
@@ -932,6 +932,22 @@ Elasticity
                   <string>Shape:</string>
                  </property>
                 </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_7">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Minimum</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
                <item>
                 <widget class="QComboBox" name="shapeDropdown">
