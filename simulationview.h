@@ -69,6 +69,8 @@ class SimulationView: public QGraphicsView {
 
   signals:
 
+    void startLabelTimer(int milliseconds);
+    void stopLabelTimer();
 
   private slots:
 

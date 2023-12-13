@@ -155,6 +155,7 @@ void SimulationView::runSimulation() {
             createShape(shape);
     }
     timer->start(3);
+    emit startLabelTimer(5000);
 }
 
 void SimulationView::createShape(int shape) {
@@ -262,11 +263,11 @@ void SimulationView::createShape(int shape) {
             break;
         }
     }
-    // b2Vec2 impulseForce = b2Vec2(((scene->width() / 2) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().x) * 50,
-    //                              ((scene->height() / 2) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().y) * 50);
-    // shapeBodies.at(shapeBodies.length() - 1)
-    //     ->ApplyLinearImpulse(impulseForce, shapeBodies.at(shapeBodies.length() - 1)->GetLocalCenter(), true);
-    shapeBodies.at(shapeBodies.length() - 1)->ApplyForceToCenter(b2Vec2(0, -5000), true);
+    b2Vec2 impulseForce = b2Vec2(((scene->width() / 2) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().x) * 50,
+                                 ((scene->height() / 2) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().y) * 50);
+    shapeBodies.at(shapeBodies.length() - 1)
+        ->ApplyLinearImpulse(impulseForce, shapeBodies.at(shapeBodies.length() - 1)->GetLocalCenter(), true);
+    // shapeBodies.at(shapeBodies.length() - 1)->ApplyForceToCenter(b2Vec2(0, -5000), true);
     shapeBodies.at(shapeBodies.length() - 1)->SetAngularVelocity(0);
 }
 
@@ -276,13 +277,12 @@ int SimulationView::getRandomNumber(int min, int max) {
 
 void SimulationView::stopSimulation() {
     timer->stop();
+    emit stopLabelTimer();
 }
 
 SimulationView::~SimulationView() {
     timer->stop();
     delete timer;
-    delete scene;
-    delete sceneBackground;
     for(b2Body* ballBody : shapeBodies) {
         if(ballBody != nullptr) {
             world.DestroyBody(ballBody);
@@ -291,4 +291,6 @@ SimulationView::~SimulationView() {
     for(QGraphicsItem* ballImage : shapeImages) {
         delete ballImage;
     }
+    delete sceneBackground;
+    delete scene;
 }

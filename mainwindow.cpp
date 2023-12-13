@@ -10,6 +10,7 @@
 
 #include "mainwindow.h"
 
+#include "qtimer.h"
 #include "ui_mainwindow.h"
 
 #include <QColorDialog>
@@ -23,6 +24,12 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent), ui(new Ui::MainWin
     ui->setupUi(this);
 
     // Connect view buttons to controller and model
+
+    labelTimer = new QTimer();
+    connect(labelTimer, &QTimer::timeout, this, &MainWindow::updateSimulationLabel);
+
+    connect(ui->simulationBox, &SimulationView::startLabelTimer, this, &MainWindow::startLabelTimer);
+    connect(ui->simulationBox, &SimulationView::startLabelTimer, this, &MainWindow::stopLabelTimer);
 
     connect(ui->startButton, &QPushButton::clicked, ui->simulationBox, &SimulationView::runSimulation);
     connect(ui->startButton, &QPushButton::clicked, this, &MainWindow::startButtonClicked);
@@ -56,6 +63,24 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(ui->colorSettingsButton, &QPushButton::clicked, this, &MainWindow::colorSettingsClicked);
 
     connect(ui->shapeDropdown, &QComboBox::activated, this, &MainWindow::shapeSelected);
+}
+
+void MainWindow::startLabelTimer(int milliseconds) {
+    labelTimer->start(milliseconds);
+}
+
+void MainWindow::stopLabelTimer() {
+    labelTimer->stop();
+}
+
+void MainWindow::updateSimulationLabel() {
+    QString text = ui->simulationLabel->text();
+    if(text.at(text.length() - 5) == '.')
+        ui->simulationLabel->setText(QString("Simulation In Progress "));
+    else if(text.at(text.length() - 3) == '.')
+        ui->simulationLabel->setText(QString("Simulation In Progress . . ."));
+    else if(text.at(text.length() - 1) == '.')
+        ui->simulationLabel->setText(QString("Simulation In Progress . ."));
 }
 
 void MainWindow::shapeSelected(int shape) {

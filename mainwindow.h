@@ -30,6 +30,8 @@ class MainWindow: public QMainWindow {
   private:
     /// @brief The UI object
     Ui::MainWindow* ui;
+    /// @brief Controls dynamic in progress label.
+    QTimer* labelTimer;
 
   signals:
     void updateShapeColor(bool override, QColor color);
@@ -37,6 +39,12 @@ class MainWindow: public QMainWindow {
     void updateCircleRadius(int width);
 
   private slots:
+
+    void startLabelTimer(int milliseconds);
+    void stopLabelTimer();
+
+    /// @brief Slot called when a simulation begins.
+    void updateSimulationLabel();
 
     /// @brief Slot called when a button is clicked.
     void startButtonClicked();
