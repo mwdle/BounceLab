@@ -285,7 +285,21 @@ QPushButton:pressed {
              </font>
             </property>
             <property name="styleSheet">
-             <string notr="true">background-color: #1f2024;</string>
+             <string notr="true">QPushButton{
+	background-color: #1f2024;
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+	border-radius:0px;
+}
+QPushButton:hover
+{
+  background-color: #3f424a;
+}
+QPushButton:hover:pressed
+{
+  background-color: #5f6470;
+}</string>
             </property>
             <property name="text">
              <string>Start Simulation</string>
@@ -328,7 +342,21 @@ QPushButton:pressed {
              </font>
             </property>
             <property name="styleSheet">
-             <string notr="true">background-color: #1f2024;</string>
+             <string notr="true">QPushButton{
+	background-color: #1f2024;
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+	border-radius:0px;
+}
+QPushButton:hover
+{
+  background-color: #3f424a;
+}
+QPushButton:hover:pressed
+{
+  background-color: #5f6470;
+}</string>
             </property>
             <property name="text">
              <string>Exit</string>
@@ -364,19 +392,19 @@ color: white;
           </property>
           <layout class="QGridLayout" name="gridLayout_8">
            <property name="leftMargin">
-            <number>10</number>
+            <number>15</number>
            </property>
            <property name="topMargin">
-            <number>10</number>
+            <number>15</number>
            </property>
            <property name="rightMargin">
-            <number>10</number>
+            <number>15</number>
            </property>
            <property name="bottomMargin">
-            <number>10</number>
+            <number>15</number>
            </property>
            <property name="spacing">
-            <number>10</number>
+            <number>15</number>
            </property>
            <item row="1" column="2">
             <widget class="QStackedWidget" name="settings">
@@ -954,13 +982,13 @@ background-color: #1f2024;
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>40</width>
+                   <width>45</width>
                    <height>150</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>40</width>
+                   <width>45</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -1656,11 +1684,21 @@ border-radius: 5px;
                  </font>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">	background-color: #1f2024;
+                 <string notr="true">QPushButton{
+	background-color: #1f2024;
 	border-style: solid;
 	border-color: black;
 	border-width: 1px;
-	border-radius:0px;</string>
+	border-radius:0px;
+}
+QPushButton:hover
+{
+  background-color: #3f424a;
+}
+QPushButton:hover:pressed
+{
+  background-color: #5f6470;
+}</string>
                 </property>
                 <property name="text">
                  <string>General</string>
@@ -1693,11 +1731,21 @@ border-radius: 5px;
                  </font>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: #1f2024;
+                 <string notr="true">QPushButton{
+	background-color: #1f2024;
 	border-style: solid;
 	border-color: black;
 	border-width: 1px;
-	border-radius:0px;</string>
+	border-radius:0px;
+}
+QPushButton:hover
+{
+  background-color: #3f424a;
+}
+QPushButton:hover:pressed
+{
+  background-color: #5f6470;
+}</string>
                 </property>
                 <property name="text">
                  <string>Shapes</string>
@@ -1730,10 +1778,21 @@ border-radius: 5px;
                  </font>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: #1f2024;	border-style: solid;
+                 <string notr="true">QPushButton{
+	background-color: #1f2024;
+	border-style: solid;
 	border-color: black;
 	border-width: 1px;
-	border-radius:0px;</string>
+	border-radius:0px;
+}
+QPushButton:hover
+{
+  background-color: #3f424a;
+}
+QPushButton:hover:pressed
+{
+  background-color: #5f6470;
+}</string>
                 </property>
                 <property name="text">
                  <string>Colors</string>
