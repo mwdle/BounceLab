@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(this, &MainWindow::updateBackgroundColor, ui->simulationBox, &SimulationView::setBackgroundColor);
 
     connect(ui->shapeWidth, &QSpinBox::valueChanged, ui->simulationBox, &SimulationView::setShapeWidth);
-    connect(ui->shapeHeight, &QSpinBox::valueChanged, ui->simulationBox, &SimulationView::setShapeWidth);
+    connect(ui->shapeHeight, &QSpinBox::valueChanged, ui->simulationBox, &SimulationView::setShapeHeight);
     connect(ui->circleRadius, &QSpinBox::valueChanged, this, &MainWindow::setCircleRadius);
     connect(this, &MainWindow::updateCircleRadius, ui->simulationBox, &SimulationView::setShapeWidth);
 

@@ -39,6 +39,9 @@ class SimulationView: public QGraphicsView {
     /// @param y The Box2D y position to convert to scene coordinates.
     void setPosition(QGraphicsItem* itemToPosition, float x, float y);
 
+    /// @brief Defines a shape and stores it.
+    void createShape(int shape);
+
     /// @brief The graphics scene that displays QGraphicsItems.
     QGraphicsScene* scene;
     /// @brief The Box2D world.
