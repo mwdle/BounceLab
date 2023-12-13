@@ -262,14 +262,11 @@ void SimulationView::createShape(int shape) {
             break;
         }
     }
-    b2Vec2 impulseForce = b2Vec2(((scene->width() / 2) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().x) * 50,
-                                 ((scene->height() / 2) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().y) * 50);
-    shapeBodies.at(shapeBodies.length() - 1)
-        ->ApplyLinearImpulse(impulseForce, shapeBodies.at(shapeBodies.length() - 1)->GetLocalCenter(), true);
+    // b2Vec2 impulseForce = b2Vec2(((scene->width() / 2) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().x) * 50,
+    //                              ((scene->height() / 2) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().y) * 50);
     // shapeBodies.at(shapeBodies.length() - 1)
-    //     ->ApplyLinearImpulse(b2Vec2(shapeBodies.at(shapeBodies.length() - 1)->GetPosition().x, -500),
-    //                          shapeBodies.at(shapeBodies.length() - 1)->GetLocalCenter(),
-    //                          true);
+    //     ->ApplyLinearImpulse(impulseForce, shapeBodies.at(shapeBodies.length() - 1)->GetLocalCenter(), true);
+    shapeBodies.at(shapeBodies.length() - 1)->ApplyForceToCenter(b2Vec2(0, -5000), true);
     shapeBodies.at(shapeBodies.length() - 1)->SetAngularVelocity(0);
 }
 

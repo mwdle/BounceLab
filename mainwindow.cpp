@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(ui->shapeHeight, &QSpinBox::valueChanged, ui->simulationBox, &SimulationView::setShapeHeight);
     connect(ui->circleRadius, &QSpinBox::valueChanged, this, &MainWindow::setCircleRadius);
     connect(this, &MainWindow::updateCircleRadius, ui->simulationBox, &SimulationView::setShapeWidth);
+    connect(this, &MainWindow::updateCircleRadius, ui->simulationBox, &SimulationView::setShapeHeight);
 
     connect(ui->shapeDropdown, &QComboBox::currentIndexChanged, ui->simulationBox, &SimulationView::setShape);
 
@@ -73,23 +74,37 @@ void MainWindow::setCircleRadius(int radius) {
 void MainWindow::shapeColorOverride(bool override) {
     if(override) {
         QColor color = QColorDialog::getColor(Qt::white, nullptr, "Select Color");
-        if(color.isValid())
+        if(color.isValid()) {
             emit updateShapeColor(true, color);
-        else
+            ui->shapeColor->setStyleSheet(
+                "QCheckBox::indicator:checked { background-color : " + color.name() +
+                "; border-style:inset; border-color:gray; border-width: 1px; border-radius:3px; width: 15px; height: 15px; }");
+        } else {
             ui->shapeColor->setCheckState(Qt::Unchecked);
-    } else
+            ui->shapeColor->setStyleSheet("");
+        }
+    } else {
         emit updateShapeColor(false, Qt::white);
+        ui->shapeColor->setStyleSheet("");
+    }
 }
 
 void MainWindow::backgroundColorOverride(bool override) {
     if(override) {
         QColor color = QColorDialog::getColor(Qt::black, nullptr, "Select Color");
-        if(color.isValid())
+        if(color.isValid()) {
             emit updateBackgroundColor(true, color);
-        else
+            ui->backgroundColor->setStyleSheet(
+                "QCheckBox::indicator:checked { background-color : " + color.name() +
+                "; border-style:inset; border-color:gray; border-width: 1px; border-radius:3px; width: 15px; height: 15px; }");
+        } else {
             ui->backgroundColor->setCheckState(Qt::Unchecked);
-    } else
+            ui->backgroundColor->setStyleSheet("");
+        }
+    } else {
         emit updateBackgroundColor(false, Qt::black);
+        ui->backgroundColor->setStyleSheet("");
+    }
 }
 
 void MainWindow::generalSettingsClicked() {
