@@ -38,13 +38,16 @@ class MainWindow: public QMainWindow {
     void updateBackgroundColor(bool override, QColor color);
     void updateCircleRadius(int width);
 
+  public slots:
+
+    /// @brief Slot called when a simulation begins.
+    void updateSimulationLabel();
+
   private slots:
 
     void startLabelTimer(int milliseconds);
     void stopLabelTimer();
-
-    /// @brief Slot called when a simulation begins.
-    void updateSimulationLabel();
+    void returnToSettingsButtonClicked();
 
     /// @brief Slot called when a button is clicked.
     void startButtonClicked();

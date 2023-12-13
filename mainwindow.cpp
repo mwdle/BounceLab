@@ -29,14 +29,22 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(labelTimer, &QTimer::timeout, this, &MainWindow::updateSimulationLabel);
 
     connect(ui->simulationBox, &SimulationView::startLabelTimer, this, &MainWindow::startLabelTimer);
-    connect(ui->simulationBox, &SimulationView::startLabelTimer, this, &MainWindow::stopLabelTimer);
+    connect(ui->simulationBox, &SimulationView::stopLabelTimer, this, &MainWindow::stopLabelTimer);
+
+    connect(ui->configureSimulationButton, &QPushButton::clicked, this, &MainWindow::returnToSettingsButtonClicked);
 
     connect(ui->startButton, &QPushButton::clicked, ui->simulationBox, &SimulationView::runSimulation);
     connect(ui->startButton, &QPushButton::clicked, this, &MainWindow::startButtonClicked);
+
     connect(ui->exitButton, &QPushButton::clicked, this, &MainWindow::exitButtonClicked);
+    connect(ui->exitButton2, &QPushButton::clicked, this, &MainWindow::exitButtonClicked);
     connect(ui->exitButton, &QPushButton::clicked, ui->simulationBox, &SimulationView::stopSimulation);
+    connect(ui->exitButton2, &QPushButton::clicked, ui->simulationBox, &SimulationView::stopSimulation);
+
     connect(ui->returnHomeButton, &QPushButton::clicked, this, &MainWindow::returnHomeClicked);
-    connect(ui->returnHomeButton, &QPushButton::clicked, ui->simulationBox, &SimulationView::stopSimulation);
+
+    connect(ui->returnToSettingsButton, &QPushButton::clicked, this, &MainWindow::returnToSettingsButtonClicked);
+    connect(ui->returnToSettingsButton, &QPushButton::clicked, ui->simulationBox, &SimulationView::stopSimulation);
 
     connect(ui->shapeColor, &QCheckBox::clicked, this, &MainWindow::shapeColorOverride);
     connect(this, &MainWindow::updateShapeColor, ui->simulationBox, &SimulationView::setShapeColor);
@@ -74,13 +82,15 @@ void MainWindow::stopLabelTimer() {
 }
 
 void MainWindow::updateSimulationLabel() {
-    QString text = ui->simulationLabel->text();
-    if(text.at(text.length() - 5) == '.')
-        ui->simulationLabel->setText(QString("Simulation In Progress "));
+    QString text = ui->simulationDynamicLabel->text();
+    if(text.at(text.length() - 1) == '.')
+        ui->simulationDynamicLabel->setText(QString("     "));
     else if(text.at(text.length() - 3) == '.')
-        ui->simulationLabel->setText(QString("Simulation In Progress . . ."));
-    else if(text.at(text.length() - 1) == '.')
-        ui->simulationLabel->setText(QString("Simulation In Progress . ."));
+        ui->simulationDynamicLabel->setText(QString(". . ."));
+    else if(text.at(text.length() - 5) == '.')
+        ui->simulationDynamicLabel->setText(QString(". .  "));
+    else
+        ui->simulationDynamicLabel->setText(QString(".    "));
 }
 
 void MainWindow::shapeSelected(int shape) {
@@ -146,14 +156,19 @@ void MainWindow::colorSettingsClicked() {
 
 MainWindow::~MainWindow() {
     delete ui;
+    delete labelTimer;
 }
 
 void MainWindow::returnHomeClicked() {
     ui->screenManager->setCurrentIndex(0);
 }
 
-void MainWindow::startButtonClicked() {
+void MainWindow::returnToSettingsButtonClicked() {
     ui->screenManager->setCurrentIndex(1);
+}
+
+void MainWindow::startButtonClicked() {
+    ui->screenManager->setCurrentIndex(2);
 }
 
 void MainWindow::exitButtonClicked() {

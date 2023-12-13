@@ -155,7 +155,7 @@ void SimulationView::runSimulation() {
             createShape(shape);
     }
     timer->start(3);
-    emit startLabelTimer(5000);
+    emit startLabelTimer(500);
 }
 
 void SimulationView::createShape(int shape) {
