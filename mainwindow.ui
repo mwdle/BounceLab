@@ -564,6 +564,9 @@ color: white;
                    <pointsize>11</pointsize>
                   </font>
                  </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: #1f2024;</string>
+                 </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
                  </property>
@@ -678,6 +681,9 @@ Elasticity
                    <pointsize>11</pointsize>
                   </font>
                  </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: #1f2024;</string>
+                 </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
                  </property>
@@ -719,6 +725,9 @@ Elasticity
                   <font>
                    <pointsize>11</pointsize>
                   </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: #1f2024;</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -763,7 +772,7 @@ Elasticity
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">background-color: #1f2024;</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -909,6 +918,9 @@ Elasticity
                    <pointsize>11</pointsize>
                   </font>
                  </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: #1f2024;</string>
+                 </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
                  </property>
@@ -1042,7 +1054,7 @@ Elasticity
     border-radius: 3px;
     padding: 1px 18px 1px 3px;
     min-width: 6em;
-background-color: #1f2024;
+	background-color: #1f2024;
     selection-color: #1E1E1E;
     selection-background-color: #A6A6A6;
 </string>
@@ -1117,6 +1129,9 @@ border: none;
                  </property>
                  <widget class="QWidget" name="randomSettings">
                   <layout class="QGridLayout" name="gridLayout_9">
+                   <property name="bottomMargin">
+                    <number>25</number>
+                   </property>
                    <item row="1" column="0">
                     <widget class="QSpinBox" name="randomShapeRadius">
                      <property name="sizePolicy">
@@ -1143,7 +1158,7 @@ border: none;
                       </font>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true"/>
+                      <string notr="true">background-color: #1f2024;</string>
                      </property>
                      <property name="minimum">
                       <number>1</number>
@@ -1198,7 +1213,7 @@ border: none;
                     <number>9</number>
                    </property>
                    <property name="bottomMargin">
-                    <number>9</number>
+                    <number>25</number>
                    </property>
                    <item row="0" column="0">
                     <widget class="QLabel" name="circleShape">
@@ -1260,7 +1275,7 @@ border: none;
                       </font>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true"/>
+                      <string notr="true">background-color: #1f2024;</string>
                      </property>
                      <property name="minimum">
                       <number>1</number>
@@ -1325,7 +1340,7 @@ border: none;
                       </font>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true"/>
+                      <string notr="true">background-color: #1f2024;</string>
                      </property>
                      <property name="minimum">
                       <number>1</number>
@@ -1392,7 +1407,7 @@ border: none;
                       </font>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true"/>
+                      <string notr="true">background-color: #1f2024;</string>
                      </property>
                      <property name="minimum">
                       <number>1</number>
