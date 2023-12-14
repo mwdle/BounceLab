@@ -17,13 +17,8 @@
 #include <QRandomGenerator>
 
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent), ui(new Ui::MainWindow) {
-    /*
-     * UI Setup Code
-     */
 
     ui->setupUi(this);
-
-    // Connect view buttons to controller and model
 
     labelTimer = new QTimer();
     connect(labelTimer, &QTimer::timeout, this, &MainWindow::updateSimulationLabel);
@@ -55,6 +50,7 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(ui->shapeWidth, &QSpinBox::valueChanged, ui->simulationBox, &SimulationView::setShapeWidth);
     connect(ui->shapeHeight, &QSpinBox::valueChanged, ui->simulationBox, &SimulationView::setShapeHeight);
     connect(ui->circleRadius, &QSpinBox::valueChanged, this, &MainWindow::setCircleRadius);
+    connect(ui->randomShapeRadius, &QSpinBox::valueChanged, this, &MainWindow::setCircleRadius);
     connect(this, &MainWindow::updateCircleRadius, ui->simulationBox, &SimulationView::setShapeWidth);
     connect(this, &MainWindow::updateCircleRadius, ui->simulationBox, &SimulationView::setShapeHeight);
 
@@ -113,14 +109,14 @@ void MainWindow::shapeColorOverride(bool override) {
             emit updateShapeColor(true, color);
             ui->shapeColor->setStyleSheet(
                 "QCheckBox::indicator:checked { background-color : " + color.name() +
-                "; border-style:inset; border-color:gray; border-width: 1px; border-radius:3px; width: 15px; height: 15px; }");
+                "; border-style:inset; border-color:gray; border-width: 1px; border-radius:3px; width: 25px; height: 25px; }");
         } else {
             ui->shapeColor->setCheckState(Qt::Unchecked);
-            ui->shapeColor->setStyleSheet("");
+            ui->shapeColor->setStyleSheet(colorCheckboxDefaultStyle);
         }
     } else {
         emit updateShapeColor(false, Qt::white);
-        ui->shapeColor->setStyleSheet("");
+        ui->shapeColor->setStyleSheet(colorCheckboxDefaultStyle);
     }
 }
 
@@ -131,26 +127,35 @@ void MainWindow::backgroundColorOverride(bool override) {
             emit updateBackgroundColor(true, color);
             ui->backgroundColor->setStyleSheet(
                 "QCheckBox::indicator:checked { background-color : " + color.name() +
-                "; border-style:inset; border-color:gray; border-width: 1px; border-radius:3px; width: 15px; height: 15px; }");
+                "; border-style:inset; border-color:gray; border-width: 1px; border-radius:3px; width: 25px; height: 25px; }");
         } else {
             ui->backgroundColor->setCheckState(Qt::Unchecked);
-            ui->backgroundColor->setStyleSheet("");
+            ui->backgroundColor->setStyleSheet(colorCheckboxDefaultStyle);
         }
     } else {
         emit updateBackgroundColor(false, Qt::black);
-        ui->backgroundColor->setStyleSheet("");
+        ui->backgroundColor->setStyleSheet(colorCheckboxDefaultStyle);
     }
 }
 
 void MainWindow::generalSettingsClicked() {
+    ui->generalSettingsButton->setStyleSheet(buttonSelectedStylesheet);
+    ui->colorSettingsButton->setStyleSheet(buttonDeselectedStylesheet);
+    ui->shapeSettingsButton->setStyleSheet(buttonDeselectedStylesheet);
     ui->settings->setCurrentIndex(0);
 }
 
 void MainWindow::shapeSettingsClicked() {
+    ui->generalSettingsButton->setStyleSheet(buttonDeselectedStylesheet);
+    ui->colorSettingsButton->setStyleSheet(buttonDeselectedStylesheet);
+    ui->shapeSettingsButton->setStyleSheet(buttonSelectedStylesheet);
     ui->settings->setCurrentIndex(1);
 }
 
 void MainWindow::colorSettingsClicked() {
+    ui->generalSettingsButton->setStyleSheet(buttonDeselectedStylesheet);
+    ui->colorSettingsButton->setStyleSheet(buttonSelectedStylesheet);
+    ui->shapeSettingsButton->setStyleSheet(buttonDeselectedStylesheet);
     ui->settings->setCurrentIndex(2);
 }
 
