@@ -255,8 +255,8 @@ void SimulationView::createShape(int shape) {
             b2Body* triangleBody = world.CreateBody(&triangleDef);
             b2Vec2  vertices[3];
             vertices[0].Set(0.0f, 0.0f);
-            vertices[1].Set(pixelsToMeters(shapeWidth / 2), pixelsToMeters(-shapeHeight / 2));
-            vertices[2].Set(pixelsToMeters(shapeWidth), 0.0f);
+            vertices[1].Set(pixelsToMeters(shapeWidth / 2), 0);
+            vertices[2].Set(pixelsToMeters(shapeWidth / 2), pixelsToMeters(shapeHeight));
             b2PolygonShape triangleShape;
             triangleShape.Set(vertices, 3);
 

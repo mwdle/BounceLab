@@ -59,7 +59,7 @@ class SimulationView: public QGraphicsView {
     int                shapeCount         = 50;
     double             elasticity         = 1.0;
     double             friction           = 0.0;
-    double             shapeDensity       = 0.4;
+    double             shapeDensity       = 0.25;
     int                shapeWidth         = 20;
     int                shapeHeight        = 20;
     int                shape              = random;

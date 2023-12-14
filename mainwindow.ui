@@ -1173,7 +1173,7 @@ border-radius: 5px;
                      </property>
                      <property name="text">
                       <string>Shape Density
-(0.1-.9)</string>
+(0.01-0.99)</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -1322,16 +1322,16 @@ border-radius: 5px;
                       <set>Qt::AlignCenter</set>
                      </property>
                      <property name="minimum">
-                      <double>0.100000000000000</double>
+                      <double>0.010000000000000</double>
                      </property>
                      <property name="maximum">
-                      <double>0.900000000000000</double>
+                      <double>1.000000000000000</double>
                      </property>
                      <property name="singleStep">
-                      <double>0.100000000000000</double>
+                      <double>0.050000000000000</double>
                      </property>
                      <property name="value">
-                      <double>0.500000000000000</double>
+                      <double>0.250000000000000</double>
                      </property>
                     </widget>
                    </item>
@@ -1606,7 +1606,7 @@ Elasticity
                       <double>2.000000000000000</double>
                      </property>
                      <property name="singleStep">
-                      <double>0.025000000000000</double>
+                      <double>0.050000000000000</double>
                      </property>
                      <property name="value">
                       <double>1.000000000000000</double>
