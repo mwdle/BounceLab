@@ -96,6 +96,7 @@ void MainWindow::shapeSelected(int shape) {
         case 2: ui->shapeSpecificSettings->setCurrentIndex(2); break;
         case 3: ui->shapeSpecificSettings->setCurrentIndex(2); break;
     }
+    // TODO From here, set shape width / height to avoid bugs
 }
 
 void MainWindow::setCircleRadius(int radius) {
