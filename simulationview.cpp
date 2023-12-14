@@ -176,8 +176,8 @@ void SimulationView::createShape(int shape) {
             // Define the car's dynamic body. We set its position and call the body factory.
             b2BodyDef ballDef;
             ballDef.type = b2_dynamicBody;
-            ballDef.position.Set(getRandomNumber(pixelsToMeters(25), pixelsToMeters(scene->width() - 25)),
-                                 getRandomNumber(pixelsToMeters(25), pixelsToMeters(scene->height() - 25)));
+            ballDef.position.Set(getRandomNumber(pixelsToMeters(60), pixelsToMeters(scene->width() - 60)),
+                                 getRandomNumber(pixelsToMeters(60), pixelsToMeters(scene->height() - 60)));
             ballDef.angle      = 0.0f * b2_pi;
             ballDef.allowSleep = true;
             ballDef.awake      = true;
@@ -212,8 +212,8 @@ void SimulationView::createShape(int shape) {
         case rectangle: {
             b2BodyDef rectDef;
             rectDef.type = b2_dynamicBody;
-            rectDef.position.Set(getRandomNumber(pixelsToMeters(25), pixelsToMeters(scene->width() - 25)),
-                                 getRandomNumber(pixelsToMeters(25), pixelsToMeters(scene->height() - 25)));
+            rectDef.position.Set(getRandomNumber(pixelsToMeters(60), pixelsToMeters(scene->width() - 60)),
+                                 getRandomNumber(pixelsToMeters(60), pixelsToMeters(scene->height() - 60)));
             b2Body*        rectBody = world.CreateBody(&rectDef);
             rectDef.angle           = 0.0f * b2_pi;
             rectDef.allowSleep      = true;
@@ -247,8 +247,8 @@ void SimulationView::createShape(int shape) {
         case triangle: {
             b2BodyDef triangleDef;
             triangleDef.type = b2_dynamicBody;
-            triangleDef.position.Set(getRandomNumber(pixelsToMeters(25), pixelsToMeters(scene->width() - 25)),
-                                     getRandomNumber(pixelsToMeters(25), pixelsToMeters(scene->height() - 25)));
+            triangleDef.position.Set(getRandomNumber(pixelsToMeters(60), pixelsToMeters(scene->width() - 60)),
+                                     getRandomNumber(pixelsToMeters(60), pixelsToMeters(scene->height() - 60)));
             triangleDef.angle      = 0.0f * b2_pi;
             triangleDef.allowSleep = true;
             triangleDef.awake      = true;
@@ -272,7 +272,7 @@ void SimulationView::createShape(int shape) {
             shapeBodies.push_back(triangleBody);
 
             QPolygonF triangle;
-            triangle << QPointF(0.0f, 0.0f) << QPointF(shapeWidth / 2, -shapeHeight) << QPointF(shapeWidth, 0.0f);
+            triangle << QPointF(0.0f, 0.0f) << QPointF(shapeWidth / 2, shapeHeight) << QPointF(shapeWidth, 0.0f);
             QGraphicsPolygonItem* triangleImage = scene->addPolygon(triangle);
             triangleImage->setTransformOriginPoint(
                 QPoint(triangleImage->boundingRect().width() / 2, triangleImage->boundingRect().height() / 2));
