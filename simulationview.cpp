@@ -18,9 +18,8 @@
 
 #include <QKeyEvent>
 
-SimulationView::SimulationView(QWidget* parent) : world(b2Vec2(0.0f, 0.0f)) {
+SimulationView::SimulationView(QWidget* parent): world(b2Vec2(0.0f, 0.0f)) {
 
-    // SCENE SETUP
     scene = new QGraphicsScene(0, 0, 800, 546);
     setScene(scene);
 
@@ -32,38 +31,38 @@ SimulationView::SimulationView(QWidget* parent) : world(b2Vec2(0.0f, 0.0f)) {
     scene->addItem(sceneBackground);
     setPosition(sceneBackground, scene->width() / 2, scene->height() / 2);
 
-    // BOX2D SETUP
+    this->installEventFilter(this);
 
     // Define the ground.
     b2BodyDef groundBodyDef;
-    groundBodyDef.position.Set(scene->width() / 2, 0.0f);
+    groundBodyDef.position.Set(pixelsToMeters(scene->width() / 2), 0.0f);
     b2Body*        groundBody = world.CreateBody(&groundBodyDef);
     b2PolygonShape groundBox;
-    groundBox.SetAsBox(scene->width() / 2, 0.0f);
+    groundBox.SetAsBox(pixelsToMeters(scene->width() / 2), 0.0f);
     groundBody->CreateFixture(&groundBox, 0.0f);
 
     // Define the ceiling.
     b2BodyDef ceilingBodyDef;
-    ceilingBodyDef.position.Set(scene->width() / 2, scene->height());
+    ceilingBodyDef.position.Set(pixelsToMeters(scene->width() / 2), pixelsToMeters(scene->height()));
     b2Body*        ceilingBody = world.CreateBody(&ceilingBodyDef);
     b2PolygonShape ceilingBox;
-    ceilingBox.SetAsBox(scene->width() / 2, 0.0f);
+    ceilingBox.SetAsBox(pixelsToMeters(scene->width() / 2), 0.0f);
     ceilingBody->CreateFixture(&ceilingBox, 0.0f);
 
     // Define the left wall.
     b2BodyDef leftWallBodyDef;
-    leftWallBodyDef.position.Set(0.0f, scene->height() / 2);
+    leftWallBodyDef.position.Set(0.0f, pixelsToMeters(scene->height() / 2));
     b2Body*        leftWallBody = world.CreateBody(&leftWallBodyDef);
     b2PolygonShape leftWallBox;
-    leftWallBox.SetAsBox(0.0f, scene->height() / 2);
+    leftWallBox.SetAsBox(0.0f, pixelsToMeters(scene->height() / 2));
     leftWallBody->CreateFixture(&leftWallBox, 0.0f);
 
     // Define the right wall.
     b2BodyDef rightWallBodyDef;
-    rightWallBodyDef.position.Set(scene->width(), scene->height() / 2);
+    rightWallBodyDef.position.Set(pixelsToMeters(scene->width()), pixelsToMeters(scene->height()) / 2);
     b2Body*        rightWallBody = world.CreateBody(&rightWallBodyDef);
     b2PolygonShape rightWallBox;
-    rightWallBox.SetAsBox(0.0f, scene->height() / 2);
+    rightWallBox.SetAsBox(0.0f, pixelsToMeters(scene->height() / 2));
     rightWallBody->CreateFixture(&rightWallBox, 0.0f);
 
     // Setup the physics timer
@@ -74,11 +73,22 @@ SimulationView::SimulationView(QWidget* parent) : world(b2Vec2(0.0f, 0.0f)) {
 
 void SimulationView::updateWorld() {
     // Instruct the world to perform a single step of simulation.
-    world.Step(1.0f / 60.0f, 6, 2);
+    world.Step(1.0f / 90.0f, 8, 3);
+
+    if(pressedKeys.contains(Qt::Key_Up))
+        forces.push_back(b2Vec2(0, 0.2f));
+    if(pressedKeys.contains(Qt::Key_Down))
+        forces.push_back(b2Vec2(0, -0.2f));
+    if(pressedKeys.contains(Qt::Key_Left))
+        forces.push_back(b2Vec2(-0.2f, 0));
+    if(pressedKeys.contains(Qt::Key_Right))
+        forces.push_back(b2Vec2(0.2f, 0));
+
+    applyForcesToAllBodies();
 
     for(int i = 0; i < shapeCount; i++) {
         b2Vec2 position = shapeBodies.at(i)->GetPosition();
-        setPosition(shapeImages.at(i), position.x, position.y);
+        setPosition(shapeImages.at(i), metersToPixels(position.x), metersToPixels(position.y));
         float32 angleInDegrees = shapeBodies.at(i)->GetAngle() * (180.0 / M_PI);
         shapeImages.at(i)->setRotation(angleInDegrees);
     }
@@ -154,7 +164,7 @@ void SimulationView::runSimulation() {
         else
             createShape(shape);
     }
-    timer->start(3);
+    timer->start(11);
     emit startLabelTimer(500);
 }
 
@@ -162,11 +172,15 @@ void SimulationView::createShape(int shape) {
     switch(shape) {
         case circle: {
             b2CircleShape ballShape;
-            ballShape.m_radius = shapeWidth / 2;
+            ballShape.m_radius = pixelsToMeters(shapeWidth / 2);
             // Define the car's dynamic body. We set its position and call the body factory.
             b2BodyDef ballDef;
             ballDef.type = b2_dynamicBody;
-            ballDef.position.Set(getRandomNumber(0, scene->width()), getRandomNumber(0, scene->height()));
+            ballDef.position.Set(getRandomNumber(pixelsToMeters(21), pixelsToMeters(scene->width() - 21)),
+                                 getRandomNumber(pixelsToMeters(21), pixelsToMeters(scene->height() - 21)));
+            ballDef.angle      = 0.0f * b2_pi;
+            ballDef.allowSleep = true;
+            ballDef.awake      = true;
             b2Body* ballBody = world.CreateBody(&ballDef);
 
             // Define the dynamic body fixture.
@@ -180,7 +194,8 @@ void SimulationView::createShape(int shape) {
             ballBody->CreateFixture(&ballFixture);
             shapeBodies.push_back(ballBody);
 
-            QGraphicsEllipseItem* ballImage = new QGraphicsEllipseItem(0, 0, ballShape.m_radius * 2, ballShape.m_radius * 2);
+            QGraphicsEllipseItem* ballImage =
+                new QGraphicsEllipseItem(0, 0, metersToPixels(ballShape.m_radius * 2), metersToPixels(ballShape.m_radius * 2));
             ballImage->setTransformOriginPoint(QPoint(ballImage->boundingRect().width() / 2, ballImage->boundingRect().height() / 2));
 
             if(overrideShapeColor)
@@ -190,17 +205,21 @@ void SimulationView::createShape(int shape) {
 
             scene->addItem(ballImage);
             shapeImages.push_back(ballImage);
-            setPosition(ballImage, ballBody->GetPosition().x, ballBody->GetPosition().y);
+            setPosition(ballImage, metersToPixels(ballBody->GetPosition().x), metersToPixels(ballBody->GetPosition().y));
             break;
         }
 
         case rectangle: {
             b2BodyDef rectDef;
             rectDef.type = b2_dynamicBody;
-            rectDef.position.Set(getRandomNumber(0, scene->width()), getRandomNumber(0, scene->height()));
+            rectDef.position.Set(getRandomNumber(pixelsToMeters(21), pixelsToMeters(scene->width() - 21)),
+                                 getRandomNumber(pixelsToMeters(21), pixelsToMeters(scene->height() - 21)));
             b2Body*        rectBody = world.CreateBody(&rectDef);
+            rectDef.angle           = 0.0f * b2_pi;
+            rectDef.allowSleep      = true;
+            rectDef.awake           = true;
             b2PolygonShape dynamicBox;
-            dynamicBox.SetAsBox(shapeWidth / 2, shapeHeight / 2);
+            dynamicBox.SetAsBox(pixelsToMeters(shapeWidth / 2), pixelsToMeters(shapeHeight / 2));
 
             // Define the dynamic body fixture.
             b2FixtureDef rectFixture;
@@ -221,19 +240,23 @@ void SimulationView::createShape(int shape) {
                 rectImage->setBrush(shapeColor);
             else
                 rectImage->setBrush(QColor(getRandomNumber(0, 255), getRandomNumber(0, 255), getRandomNumber(0, 255)));
-            setPosition(rectImage, rectBody->GetPosition().x, rectBody->GetPosition().y);
+            setPosition(rectImage, metersToPixels(rectBody->GetPosition().x), metersToPixels(rectBody->GetPosition().y));
             break;
         }
 
         case triangle: {
             b2BodyDef triangleDef;
             triangleDef.type = b2_dynamicBody;
-            triangleDef.position.Set(getRandomNumber(0, scene->width()), getRandomNumber(0, scene->height()));
+            triangleDef.position.Set(getRandomNumber(pixelsToMeters(21), pixelsToMeters(scene->width() - 21)),
+                                     getRandomNumber(pixelsToMeters(21), pixelsToMeters(scene->height() - 21)));
+            triangleDef.angle      = 0.0f * b2_pi;
+            triangleDef.allowSleep = true;
+            triangleDef.awake      = true;
             b2Body* triangleBody = world.CreateBody(&triangleDef);
             b2Vec2  vertices[3];
             vertices[0].Set(0.0f, 0.0f);
-            vertices[1].Set(shapeWidth / 2, -shapeHeight / 2);
-            vertices[2].Set(shapeWidth, 0.0f);
+            vertices[1].Set(pixelsToMeters(shapeWidth / 2), pixelsToMeters(-shapeHeight / 2));
+            vertices[2].Set(pixelsToMeters(shapeWidth), 0.0f);
             b2PolygonShape triangleShape;
             triangleShape.Set(vertices, 3);
 
@@ -259,20 +282,43 @@ void SimulationView::createShape(int shape) {
                 triangleImage->setBrush(QColor(getRandomNumber(0, 255), getRandomNumber(0, 255), getRandomNumber(0, 255)));
 
             shapeImages.push_back(triangleImage);
-            setPosition(triangleImage, triangleBody->GetPosition().x, triangleBody->GetPosition().y);
+            setPosition(triangleImage, metersToPixels(triangleBody->GetPosition().x), metersToPixels(triangleBody->GetPosition().y));
             break;
         }
     }
-    b2Vec2 impulseForce = b2Vec2(((scene->width() / 2) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().x) * 50,
-                                 ((scene->height() / 2) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().y) * 50);
-    shapeBodies.at(shapeBodies.length() - 1)
-        ->ApplyLinearImpulse(impulseForce, shapeBodies.at(shapeBodies.length() - 1)->GetLocalCenter(), true);
+    b2Vec2 impulseForce = b2Vec2((pixelsToMeters((scene->width() / 2)) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().x) * 4,
+                                 (pixelsToMeters((scene->height() / 2)) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().y) * 4);
+    shapeBodies.at(shapeBodies.length() - 1)->ApplyForceToCenter(impulseForce, true);
     // shapeBodies.at(shapeBodies.length() - 1)->ApplyForceToCenter(b2Vec2(0, -5000), true);
-    shapeBodies.at(shapeBodies.length() - 1)->SetAngularVelocity(0);
+}
+
+double SimulationView::pixelsToMeters(double pixels) {
+    return pixels / pixelsPerMeter;
+}
+
+double SimulationView::metersToPixels(double meters) {
+    return meters * pixelsPerMeter;
 }
 
 int SimulationView::getRandomNumber(int min, int max) {
     return min + std::rand() % (max - min + 1);
+}
+
+bool SimulationView::eventFilter(QObject* obj, QEvent* event) {
+    if(event->type() == QEvent::KeyPress)
+        pressedKeys += ((QKeyEvent*) event)->key();
+    else if(event->type() == QEvent::KeyRelease)
+        pressedKeys -= ((QKeyEvent*) event)->key();
+    return false;
+}
+
+void SimulationView::applyForcesToAllBodies() {
+    for(b2Body* body : shapeBodies) {
+        for(b2Vec2 force : forces) {
+            body->ApplyForceToCenter(force, true);
+        }
+    }
+    forces.clear();
 }
 
 void SimulationView::stopSimulation() {

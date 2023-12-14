@@ -39,6 +39,11 @@ class SimulationView: public QGraphicsView {
     /// @param y The Box2D y position to convert to scene coordinates.
     void setPosition(QGraphicsItem* itemToPosition, float x, float y);
 
+    double pixelsToMeters(double pixels);
+    double metersToPixels(double meters);
+
+    const int pixelsPerMeter = 60;
+
     /// @brief Defines a shape and stores it.
     void createShape(int shape);
 
@@ -54,9 +59,9 @@ class SimulationView: public QGraphicsView {
     int                shapeCount         = 50;
     double             elasticity         = 1.0;
     double             friction           = 0.0;
-    double             shapeDensity       = 1.0;
-    int                shapeWidth         = 10;
-    int                shapeHeight        = 10;
+    double             shapeDensity       = 0.4;
+    int                shapeWidth         = 20;
+    int                shapeHeight        = 20;
     int                shape              = random;
     bool               overrideShapeColor = false;
     QColor             shapeColor;
@@ -67,12 +72,18 @@ class SimulationView: public QGraphicsView {
 
     int getRandomNumber(int min, int max);
 
+    QSet<int> pressedKeys;
+
+    QList<b2Vec2> forces;
+
   signals:
 
     void startLabelTimer(int milliseconds);
     void stopLabelTimer();
 
   private slots:
+    /// @brief Applies a list of given forces to every body in the shapeBodies list.
+    void applyForcesToAllBodies();
 
   public slots:
     void setShapeCount(int count);
@@ -92,6 +103,9 @@ class SimulationView: public QGraphicsView {
 
     /// @brief Overridden resizeEvent for QGraphicsView that scales its child scene upon resize.
     void resizeEvent(QResizeEvent* event) override;
+
+    /// @brief Overriden keyPressEvent to handle left and right arrow key presses.
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
   public slots:
 

@@ -11,6 +11,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "Box2D/Common/b2Math.h"
+
 #include <QMainWindow>
 #include <QRandomGenerator>
 
@@ -41,7 +43,6 @@ class MainWindow: public QMainWindow {
 
     QString colorCheckboxDefaultStyle = "QCheckBox::indicator:unchecked { background-color: white; border-style:inset; border-color:gray; "
                                         "border-width: 1px; border-radius:3px; width: 25px; height: 25px; }";
-
   signals:
     void updateShapeColor(bool override, QColor color);
     void updateBackgroundColor(bool override, QColor color);
