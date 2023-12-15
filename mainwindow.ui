@@ -2242,34 +2242,6 @@ border: none;
                    <string notr="true"/>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_7">
-                   <item row="0" column="0">
-                    <widget class="QLabel" name="shapeColorLabel">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>220</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>12</pointsize>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Override Shape Color
-(Default: Each Shape Color Is Random)</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
                    <item row="1" column="0">
                     <layout class="QHBoxLayout" name="layout3">
                      <property name="spacing">
@@ -2280,71 +2252,6 @@ border: none;
                      </property>
                      <item>
                       <widget class="QCheckBox" name="shapeColor">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>120</width>
-                         <height>40</height>
-                        </size>
-                       </property>
-                       <property name="font">
-                        <font>
-                         <pointsize>13</pointsize>
-                        </font>
-                       </property>
-                       <property name="styleSheet">
-                        <string notr="true">QCheckBox::indicator:unchecked { background-color: white; border-style:inset; border-color:gray; border-width: 1px; border-radius:3px; width: 25px; height: 25px; }</string>
-                       </property>
-                       <property name="text">
-                        <string>Override</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                   <item row="0" column="2">
-                    <widget class="QLabel" name="backgroundColorLabel">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>220</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>12</pointsize>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Override Background Color
-(Default: Black)</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="2">
-                    <layout class="QHBoxLayout" name="layout2">
-                     <property name="spacing">
-                      <number>0</number>
-                     </property>
-                     <property name="sizeConstraint">
-                      <enum>QLayout::SetMinimumSize</enum>
-                     </property>
-                     <item>
-                      <widget class="QCheckBox" name="backgroundColor">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                          <horstretch>0</horstretch>
@@ -2408,6 +2315,99 @@ border: none;
                      </property>
                      <property name="midLineWidth">
                       <number>2</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="2">
+                    <layout class="QHBoxLayout" name="layout2">
+                     <property name="spacing">
+                      <number>0</number>
+                     </property>
+                     <property name="sizeConstraint">
+                      <enum>QLayout::SetMinimumSize</enum>
+                     </property>
+                     <item>
+                      <widget class="QCheckBox" name="backgroundColor">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>120</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <pointsize>13</pointsize>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QCheckBox::indicator:unchecked { background-color: white; border-style:inset; border-color:gray; border-width: 1px; border-radius:3px; width: 25px; height: 25px; }</string>
+                       </property>
+                       <property name="text">
+                        <string>Override</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item row="0" column="2">
+                    <widget class="QLabel" name="backgroundColorLabel">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>220</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Override Background Color
+(Default: Black)</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="shapeColorLabel">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>220</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Override Shape Color
+(Default: Each Shape Color Is Random)</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
                      </property>
                     </widget>
                    </item>
@@ -2487,6 +2487,9 @@ border-color: transparent;</string>
               <width>60</width>
               <height>60</height>
              </size>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
             </property>
             <property name="styleSheet">
              <string notr="true">background-color: transparent;

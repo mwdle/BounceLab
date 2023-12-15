@@ -66,7 +66,6 @@ SimulationView::SimulationView(QWidget* parent): world(b2Vec2(0.0f, 0.0f)) {
     rightWallBody->CreateFixture(&rightWallBox, 0.0f);
 
     // Setup the physics timer
-    QWidget::setFocus();
     timer = new QTimer();
     connect(timer, &QTimer::timeout, this, &SimulationView::updateWorld);
 }
@@ -272,7 +271,7 @@ void SimulationView::createShape(int shape) {
             shapeBodies.push_back(triangleBody);
 
             QPolygonF triangle;
-            triangle << QPointF(0.0f, 0.0f) << QPointF(shapeWidth / 2, shapeHeight) << QPointF(shapeWidth, 0.0f);
+            triangle << QPointF(shapeWidth / 2, -shapeHeight) << QPointF(shapeWidth, shapeHeight / 2) << QPointF(0, shapeHeight / 2);
             QGraphicsPolygonItem* triangleImage = scene->addPolygon(triangle);
             triangleImage->setTransformOriginPoint(
                 QPoint(triangleImage->boundingRect().width() / 2, triangleImage->boundingRect().height() / 2));
@@ -286,9 +285,9 @@ void SimulationView::createShape(int shape) {
             break;
         }
     }
-    b2Vec2 impulseForce = b2Vec2((pixelsToMeters((scene->width() / 2)) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().x) * 4,
-                                 (pixelsToMeters((scene->height() / 2)) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().y) * 4);
-    shapeBodies.at(shapeBodies.length() - 1)->ApplyForceToCenter(impulseForce, true);
+    // b2Vec2 impulseForce = b2Vec2((pixelsToMeters((scene->width() / 2)) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().x) * 4,
+    //                              (pixelsToMeters((scene->height() / 2)) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().y) * 4);
+    // shapeBodies.at(shapeBodies.length() - 1)->ApplyForceToCenter(impulseForce, true);
     // shapeBodies.at(shapeBodies.length() - 1)->ApplyForceToCenter(b2Vec2(0, -5000), true);
 }
 
