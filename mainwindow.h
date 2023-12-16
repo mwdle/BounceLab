@@ -41,7 +41,7 @@ class MainWindow: public QMainWindow {
         "QPushButton{ background-color: #25272b; border-style: solid; border-color: black; border-width: 1px; border-radius:0px; } "
         "QPushButton:hover { background-color: #3f424a; } QPushButton:hover:pressed { background-color: #5f6470; }";
 
-    QString colorCheckboxDefaultStyle = "QCheckBox::indicator:unchecked { background-color: white; border-style:inset; border-color:gray; "
+    QString colorCheckboxDefaultStyle = "QCheckBox { color: gray; } QCheckBox::indicator:unchecked { border-style:inset; border-color:gray; "
                                         "border-width: 1px; border-radius:3px; width: 25px; height: 25px; }";
   signals:
     void updateShapeColor(bool override, QColor color);

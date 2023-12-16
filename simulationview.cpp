@@ -200,7 +200,7 @@ void SimulationView::createShape(int shape) {
             if(overrideShapeColor)
                 ballImage->setBrush(shapeColor);
             else
-                ballImage->setBrush(QColor(getRandomNumber(0, 255), getRandomNumber(0, 255), getRandomNumber(0, 255)));
+                ballImage->setBrush(QColor(getRandomNumber(15, 255), getRandomNumber(15, 255), getRandomNumber(15, 255)));
 
             scene->addItem(ballImage);
             shapeImages.push_back(ballImage);
@@ -238,7 +238,7 @@ void SimulationView::createShape(int shape) {
             if(overrideShapeColor)
                 rectImage->setBrush(shapeColor);
             else
-                rectImage->setBrush(QColor(getRandomNumber(0, 255), getRandomNumber(0, 255), getRandomNumber(0, 255)));
+                rectImage->setBrush(QColor(getRandomNumber(15, 255), getRandomNumber(15, 255), getRandomNumber(15, 255)));
             setPosition(rectImage, metersToPixels(rectBody->GetPosition().x), metersToPixels(rectBody->GetPosition().y));
             break;
         }
@@ -278,16 +278,16 @@ void SimulationView::createShape(int shape) {
             if(overrideShapeColor)
                 triangleImage->setBrush(shapeColor);
             else
-                triangleImage->setBrush(QColor(getRandomNumber(0, 255), getRandomNumber(0, 255), getRandomNumber(0, 255)));
+                triangleImage->setBrush(QColor(getRandomNumber(15, 255), getRandomNumber(15, 255), getRandomNumber(15, 255)));
 
             shapeImages.push_back(triangleImage);
             setPosition(triangleImage, metersToPixels(triangleBody->GetPosition().x), metersToPixels(triangleBody->GetPosition().y));
             break;
         }
     }
-    // b2Vec2 impulseForce = b2Vec2((pixelsToMeters((scene->width() / 2)) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().x) * 4,
-    //                              (pixelsToMeters((scene->height() / 2)) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().y) * 4);
-    // shapeBodies.at(shapeBodies.length() - 1)->ApplyForceToCenter(impulseForce, true);
+    b2Vec2 impulseForce = b2Vec2((pixelsToMeters((scene->width() / 2)) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().x) * 4,
+                                 (pixelsToMeters((scene->height() / 2)) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().y) * 4);
+    shapeBodies.at(shapeBodies.length() - 1)->ApplyForceToCenter(impulseForce, true);
     // shapeBodies.at(shapeBodies.length() - 1)->ApplyForceToCenter(b2Vec2(0, -5000), true);
 }
 

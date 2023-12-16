@@ -109,7 +109,7 @@ void MainWindow::shapeColorOverride(bool override) {
         if(color.isValid()) {
             emit updateShapeColor(true, color);
             ui->shapeColor->setStyleSheet(
-                "QCheckBox::indicator:checked { background-color : " + color.name() +
+                "QCheckBox { color: white; } QCheckBox::indicator:checked { background-color : " + color.name() +
                 "; border-style:inset; border-color:gray; border-width: 1px; border-radius:3px; width: 25px; height: 25px; }");
         } else {
             ui->shapeColor->setCheckState(Qt::Unchecked);
@@ -127,7 +127,7 @@ void MainWindow::backgroundColorOverride(bool override) {
         if(color.isValid()) {
             emit updateBackgroundColor(true, color);
             ui->backgroundColor->setStyleSheet(
-                "QCheckBox::indicator:checked { background-color : " + color.name() +
+                "QCheckBox { color: white; } QCheckBox::indicator:checked { background-color : " + color.name() +
                 "; border-style:inset; border-color:gray; border-width: 1px; border-radius:3px; width: 25px; height: 25px; }");
         } else {
             ui->backgroundColor->setCheckState(Qt::Unchecked);

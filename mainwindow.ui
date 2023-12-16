@@ -2270,7 +2270,10 @@ border: none;
                         </font>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">QCheckBox::indicator:unchecked { background-color: white; border-style:inset; border-color:gray; border-width: 1px; border-radius:3px; width: 25px; height: 25px; }</string>
+                        <string notr="true">QCheckBox { 
+color: gray;
+}
+QCheckBox::indicator:unchecked { border-style:inset; border-color:gray; border-width: 1px; border-radius:3px; width: 25px; height: 25px; }</string>
                        </property>
                        <property name="text">
                         <string>Override</string>
@@ -2346,7 +2349,10 @@ border: none;
                         </font>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">QCheckBox::indicator:unchecked { background-color: white; border-style:inset; border-color:gray; border-width: 1px; border-radius:3px; width: 25px; height: 25px; }</string>
+                        <string notr="true">QCheckBox { 
+color: gray;
+}
+QCheckBox::indicator:unchecked { border-style:inset; border-color:gray; border-width: 1px; border-radius:3px; width: 25px; height: 25px; }</string>
                        </property>
                        <property name="text">
                         <string>Override</string>
