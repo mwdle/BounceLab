@@ -44,8 +44,12 @@ class MainWindow: public QMainWindow {
     QString colorCheckboxDefaultStyle = "QCheckBox { color: gray; } QCheckBox::indicator:unchecked { border-style:inset; border-color:gray; "
                                         "border-width: 1px; border-radius:3px; width: 25px; height: 25px; }";
   signals:
+
+    /// @brief Signals to the simulation to update the shape color.
     void updateShapeColor(bool override, QColor color);
+    /// @brief Signals to the simulation to update the background color.
     void updateBackgroundColor(bool override, QColor color);
+    /// @brief Signals to the simulation to update the circle radius.
     void updateCircleRadius(int width);
 
   public slots:
@@ -55,37 +59,30 @@ class MainWindow: public QMainWindow {
 
   private slots:
 
+    /// @brief Display the ... animation on the simulation screen.
     void startLabelTimer(int milliseconds);
+    /// @brief Stop the ... animation on the simulation screen.
     void stopLabelTimer();
+    /// @brief Slot called when a button is clicked.
     void returnToSettingsButtonClicked();
-
     /// @brief Slot called when a button is clicked.
     void startButtonClicked();
-
     /// @brief Slot called when a button is clicked
     void exitButtonClicked();
-
     /// @brief Slot called when a button is clicked
     void returnHomeClicked();
-
     /// @brief Slot called when a button is clicked
     void generalSettingsClicked();
-
     /// @brief Slot called when a button is clicked
     void shapeSettingsClicked();
-
     /// @brief Slot called when a button is clicked
     void colorSettingsClicked();
-
-    /// @brief Slot called when a button is clicked
+    /// @brief Slot called when a dropdown option is selected
     void shapeSelected(int shape);
-
     /// @brief Slot called when a spinbox is changed
     void setCircleRadius(int radius);
-
     /// @brief Slot called when a checkbox is selected
     void shapeColorOverride(bool override);
-
     /// @brief Slot called when a checkbox is selected
     void backgroundColorOverride(bool override);
 };

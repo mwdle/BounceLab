@@ -17,6 +17,8 @@
 #include "qtimer.h"
 
 #include <QKeyEvent>
+#include <QOpenGLWidget>
+#include <QSurfaceFormat>
 
 SimulationView::SimulationView(QWidget* parent): world(b2Vec2(0.0f, 0.0f)) {
 
@@ -72,16 +74,16 @@ SimulationView::SimulationView(QWidget* parent): world(b2Vec2(0.0f, 0.0f)) {
 
 void SimulationView::updateWorld() {
     // Instruct the world to perform a single step of simulation.
-    world.Step(1.0f / 90.0f, 8, 3);
+    world.Step(1.0f / 300.0f, 6, 2);
 
     if(pressedKeys.contains(Qt::Key_Up))
-        forces.push_back(b2Vec2(0, 0.2f));
+        forces.push_back(b2Vec2(0, 0.1f));
     if(pressedKeys.contains(Qt::Key_Down))
-        forces.push_back(b2Vec2(0, -0.2f));
+        forces.push_back(b2Vec2(0, -0.1f));
     if(pressedKeys.contains(Qt::Key_Left))
-        forces.push_back(b2Vec2(-0.2f, 0));
+        forces.push_back(b2Vec2(-0.1f, 0));
     if(pressedKeys.contains(Qt::Key_Right))
-        forces.push_back(b2Vec2(0.2f, 0));
+        forces.push_back(b2Vec2(0.1f, 0));
 
     applyForcesToAllBodies();
 
@@ -163,7 +165,7 @@ void SimulationView::runSimulation() {
         else
             createShape(shape);
     }
-    timer->start(11);
+    timer->start(3);
     emit startLabelTimer(500);
 }
 
@@ -285,8 +287,8 @@ void SimulationView::createShape(int shape) {
             break;
         }
     }
-    b2Vec2 impulseForce = b2Vec2((pixelsToMeters((scene->width() / 2)) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().x) * 4,
-                                 (pixelsToMeters((scene->height() / 2)) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().y) * 4);
+    b2Vec2 impulseForce = b2Vec2((pixelsToMeters((scene->width() / 2)) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().x) * 6,
+                                 (pixelsToMeters((scene->height() / 2)) - shapeBodies.at(shapeBodies.length() - 1)->GetPosition().y) * 6);
     shapeBodies.at(shapeBodies.length() - 1)->ApplyForceToCenter(impulseForce, true);
     // shapeBodies.at(shapeBodies.length() - 1)->ApplyForceToCenter(b2Vec2(0, -5000), true);
 }
