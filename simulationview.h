@@ -13,7 +13,6 @@
 
 #include "Box2D/Dynamics/b2World.h"
 #include "qgraphicsitem.h"
-#include "qopenglwidget.h"
 
 #include <QGraphicsView>
 
@@ -54,8 +53,6 @@ class SimulationView: public QGraphicsView {
 
     /// @brief The graphics scene that displays QGraphicsItems.
     QGraphicsScene* scene;
-    /// @brief The OpenGl Widget for the Scene.
-    QOpenGLWidget *gl;
     /// @brief The Box2D world.
     b2World world;
     /// @brief The dynamic bodies of the car objects
@@ -73,6 +70,10 @@ class SimulationView: public QGraphicsView {
     bool               overrideShapeColor = false;
     QColor             shapeColor;
     QGraphicsPathItem* sceneBackground;
+    bool cursorShapeEnabled = true;
+    QGraphicsItem* cursorImage;
+    b2Body* cursorBody;
+
 
     /// @brief The timer that updates the Box2D world and the graphics scene.
     QTimer* timer;
@@ -90,7 +91,7 @@ class SimulationView: public QGraphicsView {
 
     /// @brief Signals to the main window to display the ... animation on the simulation screen.
     void startLabelTimer(int milliseconds);
-       /// @brief Signals to the main window to stop the ... animation on the simulation screen.
+    /// @brief Signals to the main window to stop the ... animation on the simulation screen.
     void stopLabelTimer();
 
   private slots:
@@ -129,8 +130,7 @@ class SimulationView: public QGraphicsView {
 
     /// @brief Overridden resizeEvent for QGraphicsView that scales its child scene upon resize.
     void resizeEvent(QResizeEvent* event) override;
-
-    /// @brief Overriden keyPressEvent to handle left and right arrow key presses.
+    /// @brief Overriden event filter to handle key presses and mouse movements.
     bool eventFilter(QObject* obj, QEvent* event) override;
 
   public slots:

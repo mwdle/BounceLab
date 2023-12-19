@@ -125,5 +125,3 @@ DISTFILES += \
 
 RESOURCES += \
     Images.qrc
-
-QT += openglwidgets

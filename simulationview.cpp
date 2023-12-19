@@ -17,8 +17,6 @@
 #include "qtimer.h"
 
 #include <QKeyEvent>
-#include <QOpenGLWidget>
-#include <QSurfaceFormat>
 
 SimulationView::SimulationView(QWidget* parent): world(b2Vec2(0.0f, 0.0f)) {
 
@@ -34,6 +32,7 @@ SimulationView::SimulationView(QWidget* parent): world(b2Vec2(0.0f, 0.0f)) {
     setPosition(sceneBackground, scene->width() / 2, scene->height() / 2);
 
     this->installEventFilter(this);
+    viewport()->installEventFilter(this);
 
     // Define the ground.
     b2BodyDef groundBodyDef;
@@ -67,6 +66,35 @@ SimulationView::SimulationView(QWidget* parent): world(b2Vec2(0.0f, 0.0f)) {
     rightWallBox.SetAsBox(0.0f, pixelsToMeters(scene->height() / 2));
     rightWallBody->CreateFixture(&rightWallBox, 0.0f);
 
+    if (cursorShapeEnabled)
+    {
+        b2BodyDef cursorBodyDef;
+        cursorBodyDef.type = b2_kinematicBody;
+        cursorBodyDef.position.Set(pixelsToMeters(10.0f), pixelsToMeters(10.0f));
+        cursorBodyDef.angle = 0.0f;
+        cursorBody = world.CreateBody(&cursorBodyDef);
+
+        b2PolygonShape dynamicBox;
+        dynamicBox.SetAsBox(pixelsToMeters(12), pixelsToMeters(12));
+        // b2CircleShape cursorShape;
+        // cursorShape.m_radius = pixelsToMeters(15);
+        b2FixtureDef cursorFixtureDef;
+        cursorFixtureDef.shape = &dynamicBox;
+        cursorFixtureDef.density = 1.0f;
+        cursorFixtureDef.restitution = 2.5f;
+        cursorBody->CreateFixture(&cursorFixtureDef);
+
+        QGraphicsRectItem* rectImage = new QGraphicsRectItem(0, 0, 24, 24);
+        rectImage->setBrush(QColor(getRandomNumber(15, 255), getRandomNumber(15, 255), getRandomNumber(15, 255)));
+        cursorImage = rectImage;
+        scene->addItem(cursorImage);
+        setPosition(cursorImage, metersToPixels(cursorBody->GetPosition().x), metersToPixels(cursorBody->GetPosition().y));
+        QWidget::setMouseTracking(true);
+        viewport()->setCursor(Qt::BlankCursor);
+    }
+    else viewport()->setCursor(Qt::ArrowCursor);
+
+
     // Setup the physics timer
     timer = new QTimer();
     connect(timer, &QTimer::timeout, this, &SimulationView::updateWorld);
@@ -92,6 +120,10 @@ void SimulationView::updateWorld() {
         setPosition(shapeImages.at(i), metersToPixels(position.x), metersToPixels(position.y));
         float32 angleInDegrees = shapeBodies.at(i)->GetAngle() * (180.0 / M_PI);
         shapeImages.at(i)->setRotation(angleInDegrees);
+    }
+    if (cursorShapeEnabled)
+    {
+        setPosition(cursorImage, metersToPixels(cursorBody->GetPosition().x), metersToPixels(cursorBody->GetPosition().y));
     }
 }
 
@@ -310,6 +342,15 @@ bool SimulationView::eventFilter(QObject* obj, QEvent* event) {
         pressedKeys += ((QKeyEvent*) event)->key();
     else if(event->type() == QEvent::KeyRelease)
         pressedKeys -= ((QKeyEvent*) event)->key();
+    else if (event->type() == QEvent::MouseMove)
+    {
+        if (cursorShapeEnabled)
+        {
+            QPointF sceneCoords = mapToScene(((QMouseEvent*)event)->pos().x(), ((QMouseEvent*)event)->pos().y());
+            cursorBody->SetTransform(b2Vec2(pixelsToMeters(sceneCoords.x()), pixelsToMeters(scene->height() - sceneCoords.y())), 0.0f);
+        }
+        // else if ()
+    }
     return false;
 }
 
@@ -338,6 +379,8 @@ SimulationView::~SimulationView() {
     for(QGraphicsItem* ballImage : shapeImages) {
         delete ballImage;
     }
+    delete cursorImage;
+    world.DestroyBody(cursorBody);
     delete sceneBackground;
     delete scene;
 }
