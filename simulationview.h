@@ -63,7 +63,7 @@ class SimulationView: public QGraphicsView {
     /// @brief The car pieces to show on the screen
     QList<QGraphicsItem*> shapeImages;
 
-    int                shapeCount         = 75;
+    int                shapeCount         = 100;
     double             elasticity         = 1.0;
     double             friction           = 0.0;
     double             shapeDensity       = 0.50;

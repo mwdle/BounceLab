@@ -1279,7 +1279,7 @@ border-radius: 5px;
                       <number>10</number>
                      </property>
                      <property name="value">
-                      <number>75</number>
+                      <number>100</number>
                      </property>
                     </widget>
                    </item>
