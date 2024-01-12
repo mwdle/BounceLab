@@ -4,7 +4,7 @@ BounceLab - A configurable and interactive graphical simulator for various shape
 * Configurable Shapes
   * Shapes are randomly mixed by default, but can be overridden to circles, rectangles, or triangles.
     * Triangles are currently broken
-      * More shapes are coming soon
+    * More shapes are coming soon
   * Shape density and size are configurable within reasonable limits 
   * Support for up to 300 shapes
     * Optimizations coming soon for better performance with high shape counts.
