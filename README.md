@@ -15,4 +15,4 @@ BounceLab - A configurable and interactive graphical simulator for various shape
 * Configurable simulation colors
   * Colors are random by default, but can be overridden for shapes and the background.
 # Other Info
-This program was implemented by integrating QT and Box2d libraries in C++. It can be compiled using qmake or a program such as QT Creator. 
+This program was implemented using QT and Box2d libraries in C++. It can be compiled using qmake or a program such as QT Creator. 
