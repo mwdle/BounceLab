@@ -1,6 +1,5 @@
 # BounceLab
-BounceLab - A configurable and interactive graphical simulator for various shapes in 2d physical space.
-<br>  
+BounceLab - A configurable and interactive graphical simulator for various shapes in 2d physical space.  
 # Features
 * Configurable Shapes
   * Shapes are randomly mixed by default, but can be overridden to circles, rectangles, or triangles.
@@ -17,6 +16,5 @@ BounceLab - A configurable and interactive graphical simulator for various shape
   * Colors are random by default, but can be overridden for shapes and the background.     
 * Keyboard Controls
   * Using the arrow keys will move all shapes in the direction of the pressed keys. The shapes will still be affected by all physical factors such as collision elasticity, shape size, and shape density, all of which may affect and/or limit control over the shapes.
-<br>  
 # Other Info
 This program was implemented using QT and Box2d libraries in C++. It can be compiled using qmake or a program such as QT Creator. 
