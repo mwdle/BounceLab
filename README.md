@@ -17,4 +17,4 @@ BounceLab - A configurable and interactive graphical simulator for various shape
 * Keyboard Controls
   * Using the arrow keys will move all shapes in the direction of the pressed keys. The shapes will still be affected by all physical factors such as collision elasticity, shape size, and shape density, all of which may affect and/or limit control over the shapes.    
 # Other Info
-This program was implemented using QT and Box2d libraries in C++. It can be compiled using qmake or a program such as QT Creator. 
+This program was implemented using QT and Box2D libraries in C++. It can be compiled using qmake or a program such as QT Creator. 
