@@ -123,6 +123,7 @@ DISTFILES += \
     Box2D/CMakeLists.txt \
     Box2D/LICENSE.txt \
     LICENSE.txt \
+    demo.gif \
     images/backButton.png
 
 RESOURCES += \
