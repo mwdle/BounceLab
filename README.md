@@ -2,7 +2,7 @@
 ### A configurable and interactive graphical simulator for various shapes in 2D physical space.    <br><br>    
 <p align="center">
   <img src="demo.gif" alt="animated"/>
-</p>  
+</p>    <br><br>    
 # Features    
 * Configurable Shapes
   * Shapes are randomly mixed by default, but can be overridden to circles, rectangles, or triangles
