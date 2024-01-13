@@ -20,6 +20,7 @@
   * Colors are random by default, but can be overridden for shapes and the background    <br><br>    
 * Keyboard Controls
   * Using the arrow keys will move all shapes in the direction of the pressed keys
-  * The shapes will still be affected by all physical factors such as collision elasticity, shape size, and shape density, all of which may affect and/or limit control over the shapes    <br><br>    
+  * The shapes will still be affected by all physical factors such as collision elasticity, shape size, and shape density, all of which may affect and/or limit control over the shapes    <br><br>
+* Mouse Controls _Coming Soon_
 # Other Info
 This program was implemented using QT and Box2D libraries in C++. It can be compiled using qmake or a program such as QT Creator. 
