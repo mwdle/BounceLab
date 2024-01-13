@@ -1,5 +1,5 @@
 # BounceLab
-### A configurable and interactive graphical simulator for various shapes in 2d physical space.    
+### A configurable and interactive graphical simulator for various shapes in 2D physical space.    
 <p align="center">
   <img src="demo.gif" alt="animated"/>
 </p>  
