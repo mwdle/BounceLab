@@ -1,5 +1,6 @@
 # BounceLab
-BounceLab - A configurable and interactive graphical simulator for various shapes in 2d physical space.    
+BounceLab - A configurable and interactive graphical simulator for various shapes in 2d physical space.
+![](https://github.com/mwdle/BounceLab/demo.gif)
 # Features    
 * Configurable Shapes
   * Shapes are randomly mixed by default, but can be overridden to circles, rectangles, or triangles.
