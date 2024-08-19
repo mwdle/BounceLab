@@ -2,7 +2,7 @@
 
 A configurable and interactive graphical simulator for various shapes in 2D physical space.  
 
-![Demo Gif](demo.gif)  
+<div align="center"><img src="demo.gif" alt="animated"/></div>  
 
 ## Table of Contents  
 
