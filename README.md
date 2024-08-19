@@ -7,7 +7,7 @@ A configurable and interactive graphical simulator for various shapes in 2D phys
 ## Table of Contents  
 
 * [Description](#bouncelab)  
-* [Terminology](#features)  
+* [Features](#features)  
 * [License](#license)  
 * [Disclaimer](#disclaimer)  
 
