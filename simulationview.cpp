@@ -10,15 +10,15 @@
 
 #include "simulationview.h"
 
-#include "Box2D/Collision/Shapes/b2CircleShape.h"
-#include "Box2D/Collision/Shapes/b2PolygonShape.h"
-#include "Box2D/Dynamics/b2Body.h"
-#include "Box2D/Dynamics/b2Fixture.h"
 #include "qtimer.h"
 
 #include <QKeyEvent>
 #include <QOpenGLWidget>
 #include <QSurfaceFormat>
+#include <box2d/b2_body.h>
+#include <box2d/b2_circle_shape.h>
+#include <box2d/b2_fixture.h>
+#include <box2d/b2_polygon_shape.h>
 
 SimulationView::SimulationView(QWidget* parent): world(b2Vec2(0.0f, 0.0f)) {
 
@@ -90,7 +90,7 @@ void SimulationView::updateWorld() {
     for(int i = 0; i < shapeCount; i++) {
         b2Vec2 position = shapeBodies.at(i)->GetPosition();
         setPosition(shapeImages.at(i), metersToPixels(position.x), metersToPixels(position.y));
-        float32 angleInDegrees = shapeBodies.at(i)->GetAngle() * (180.0 / M_PI);
+        float angleInDegrees = shapeBodies.at(i)->GetAngle() * (180.0f / M_PI);
         shapeImages.at(i)->setRotation(angleInDegrees);
     }
 }
@@ -182,7 +182,7 @@ void SimulationView::createShape(int shape) {
             ballDef.angle      = 0.0f * b2_pi;
             ballDef.allowSleep = true;
             ballDef.awake      = true;
-            b2Body* ballBody = world.CreateBody(&ballDef);
+            b2Body* ballBody   = world.CreateBody(&ballDef);
 
             // Define the dynamic body fixture.
             b2FixtureDef ballFixture;
@@ -215,10 +215,10 @@ void SimulationView::createShape(int shape) {
             rectDef.type = b2_dynamicBody;
             rectDef.position.Set(getRandomNumber(pixelsToMeters(60), pixelsToMeters(scene->width() - 60)),
                                  getRandomNumber(pixelsToMeters(60), pixelsToMeters(scene->height() - 60)));
-            b2Body*        rectBody = world.CreateBody(&rectDef);
-            rectDef.angle           = 0.0f * b2_pi;
-            rectDef.allowSleep      = true;
-            rectDef.awake           = true;
+            b2Body* rectBody   = world.CreateBody(&rectDef);
+            rectDef.angle      = 0.0f * b2_pi;
+            rectDef.allowSleep = true;
+            rectDef.awake      = true;
             b2PolygonShape dynamicBox;
             dynamicBox.SetAsBox(pixelsToMeters(shapeWidth / 2), pixelsToMeters(shapeHeight / 2));
 
@@ -253,7 +253,7 @@ void SimulationView::createShape(int shape) {
             triangleDef.angle      = 0.0f * b2_pi;
             triangleDef.allowSleep = true;
             triangleDef.awake      = true;
-            b2Body* triangleBody = world.CreateBody(&triangleDef);
+            b2Body* triangleBody   = world.CreateBody(&triangleDef);
             b2Vec2  vertices[3];
             vertices[0].Set(0.0f, 0.0f);
             vertices[1].Set(pixelsToMeters(shapeWidth / 2), 0);

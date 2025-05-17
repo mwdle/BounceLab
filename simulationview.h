@@ -11,11 +11,11 @@
 #ifndef SIMULATIONVIEW_H
 #define SIMULATIONVIEW_H
 
-#include "Box2D/Dynamics/b2World.h"
 #include "qgraphicsitem.h"
 #include "qopenglwidget.h"
 
 #include <QGraphicsView>
+#include <box2d/b2_world.h>
 
 using std::string;
 
@@ -34,7 +34,6 @@ class SimulationView: public QGraphicsView {
     };
 
   private:
-
     /// @brief Converts Box2D coordinates to scene coordinates and sets the position of the parameter QGraphicsItem in the scene.
     /// @param itemToPosition The GraphicsItem to position on the scene.
     /// @param x The Box2D x position to convert to scene coordinates.
@@ -55,7 +54,7 @@ class SimulationView: public QGraphicsView {
     /// @brief The graphics scene that displays QGraphicsItems.
     QGraphicsScene* scene;
     /// @brief The OpenGl Widget for the Scene.
-    QOpenGLWidget *gl;
+    QOpenGLWidget* gl;
     /// @brief The Box2D world.
     b2World world;
     /// @brief The dynamic bodies of the car objects
@@ -90,7 +89,7 @@ class SimulationView: public QGraphicsView {
 
     /// @brief Signals to the main window to display the ... animation on the simulation screen.
     void startLabelTimer(int milliseconds);
-       /// @brief Signals to the main window to stop the ... animation on the simulation screen.
+    /// @brief Signals to the main window to stop the ... animation on the simulation screen.
     void stopLabelTimer();
 
   private slots:
@@ -126,7 +125,6 @@ class SimulationView: public QGraphicsView {
     void stopSimulation();
 
   protected:
-
     /// @brief Overridden resizeEvent for QGraphicsView that scales its child scene upon resize.
     void resizeEvent(QResizeEvent* event) override;
 
@@ -137,7 +135,6 @@ class SimulationView: public QGraphicsView {
 
     /// @brief Called by the world timer, Steps the Box2D forward and updates the graphics scene accordingly.
     void updateWorld();
-
 };
 
 #endif  // SIMULATIONVIEW_H
